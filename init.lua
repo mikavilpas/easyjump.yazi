@@ -104,7 +104,6 @@ end)
 
 local update_double_first_key = ya.sync(function(state, str)
 	state.double_first_key = str
-	ya.render()
 end)
 
 local function is_first_key_valid(key,current_num)
