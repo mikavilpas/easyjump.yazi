@@ -43,6 +43,9 @@ local INPUT_KEY = {
 	"o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "<Esc>"
 }
 
+local SINGLE_POS = {["k"] = 21, ["j"] = 22, ["x"] = 23, ["y"] = 24, ["q"] = 25, ["p"] = 1, ["b"] = 2, ["e"] = 3, ["t"] = 4, ["a"] = 5, ["o"] = 6, ["i"] = 7, ["n"] = 8, ["s"] = 9, ["r"] = 10, ["h"] = 11, ["l"] = 12, ["d"] = 13, ["c"] = 14, ["u"] = 15, ["m"] = 16, ["f"] = 17, ["g"] = 18, ["w"] = 19, ["v"] = 20}
+local DOUBLE_POS = {["au"] = 1, ["ai"] = 2, ["ao"] = 3, ["ah"] = 4, ["aj"] = 5, ["ak"] = 6, ["al"] = 7, ["an"] = 8, ["su"] = 9, ["si"] = 10, ["so"] = 11, ["sh"] = 12, ["sj"] = 13, ["sk"] = 14, ["sl"] = 15, ["sn"] = 16, ["du"] = 17, ["di"] = 18, ["dh"] = 20, ["dj"] = 21, ["dk"] = 22, ["dl"] = 23, ["dn"] = 24, ["fu"] = 25, ["fi"] = 26, ["fo"] = 27, ["fh"] = 28, ["fj"] = 29, ["fk"] = 30, ["fl"] = 31, ["fn"] = 32, ["gu"] = 33, ["gi"] = 34, ["go"] = 35, ["gh"] = 36, ["gj"] = 37, ["gk"] = 38, ["gl"] = 39, ["gn"] = 40, ["eu"] = 41, ["ei"] = 42, ["eo"] = 43, ["eh"] = 44, ["ej"] = 45, ["do"] = 19, ["el"] = 47, ["en"] = 48, ["ru"] = 49, ["ri"] = 50, ["ro"] = 51, ["rh"] = 52, ["rj"] = 53, ["rk"] = 54, ["rl"] = 55, ["rn"] = 56, ["cu"] = 57, ["ci"] = 58, ["co"] = 59, ["ch"] = 60, ["cj"] = 61, ["ck"] = 62, ["cl"] = 63, ["cn"] = 64, ["wu"] = 65, ["wi"] = 66, ["wo"] = 67, ["wh"] = 68, ["wj"] = 69, ["wk"] = 70, ["wl"] = 71, ["wn"] = 72, ["tu"] = 73, ["ti"] = 74, ["to"] = 75, ["th"] = 76, ["tj"] = 77, ["tk"] = 78, ["tl"] = 79, ["tn"] = 80, ["vu"] = 81, ["vi"] = 82, ["vo"] = 83, ["vh"] = 84, ["vj"] = 85, ["vk"] = 86, ["vl"] = 87, ["vn"] = 88, ["xu"] = 89, ["xi"] = 90, ["xo"] = 91, ["xh"] = 92, ["xj"] = 93, ["xk"] = 94, ["xl"] = 95, ["xn"] = 96, ["bu"] = 97, ["bi"] = 98, ["bo"] = 99, ["bh"] = 100, ["bj"] = 101, ["bk"] = 102, ["bl"] = 103, ["bn"] = 104, ["qu"] = 105, ["qi"] = 106, ["qo"] = 107, ["qh"] = 108, ["qj"] = 109, ["qk"] = 110, ["ql"] = 111, ["qn"] = 112, ["ap"] = 113, ["ay"] = 114, ["am"] = 115, ["sp"] = 116, ["sy"] = 117, ["sm"] = 118, ["dp"] = 119, ["dy"] = 120, ["dm"] = 121, ["fp"] = 122, ["fy"] = 123, ["fm"] = 124, ["gp"] = 125, ["gy"] = 126, ["gm"] = 127, ["ep"] = 128, ["ey"] = 129, ["em"] = 130, ["rp"] = 131, ["ry"] = 132, ["rm"] = 133, ["cp"] = 134, ["cy"] = 135, ["cm"] = 136, ["wp"] = 137, ["wy"] = 138, ["wm"] = 139, ["ty"] = 141, ["tm"] = 142, ["vp"] = 143, ["vy"] = 144, ["vm"] = 145, ["xp"] = 146, ["xy"] = 147, ["xm"] = 148, ["bp"] = 149, ["by"] = 150, ["bm"] = 151, ["qp"] = 152, ["qy"] = 153, ["qm"] = 154, ["tp"] = 140, ["ek"] = 46}
+
 local INPUT_CANDS = {
 	{ on = "a" }, { on = "b" }, { on = "c" }, { on = "d" }, { on = "e" },
 	{ on = "f" }, { on = "g" }, { on = "h" }, { on = "i" }, { on = "j" },
@@ -119,31 +122,6 @@ local function is_first_key_valid(key,current_num)
 	return false
 end
 
-local function is_whole_key_valid(key,current_num)
-
-	if current_num > #SINGLE_LABLES then 
-		for i, value in ipairs(NORMAL_DOUBLE_LABLES) do
-			if i > current_num then
-				return nil
-			end
-			if value == key then
-				return i
-			end
-		end
-	else
-		for i, value in ipairs(SINGLE_LABLES) do
-			if i > current_num then
-				return nil
-			end
-			if value == key then
-				return i
-			end
-		end
-	end
-
-	return nil
-end
-
 local function read_input_todo (arg_current_num)
 
 	local current_num = tonumber(arg_current_num)
@@ -165,7 +143,7 @@ local function read_input_todo (arg_current_num)
 
 		if current_num <= #SINGLE_LABLES then
 			key = INPUT_KEY[cand]	
-			pos = is_whole_key_valid(key,current_num)
+			pos = SINGLE_POS[key]
 			if pos == nil or pos > current_num then
 				goto nextkey
 			else
@@ -186,7 +164,7 @@ local function read_input_todo (arg_current_num)
 
 		if key_num_count == 1 and current_num > #SINGLE_LABLES then
 			double_key = key .. INPUT_KEY[cand]
-			pos = is_whole_key_valid(double_key,current_num)
+			pos = DOUBLE_POS[double_key]
 			if pos == nil or pos > current_num then
 				goto nextkey
 			else
