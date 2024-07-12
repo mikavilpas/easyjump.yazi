@@ -186,7 +186,7 @@ local init = ya.sync(function(state)
 		state.current_num = #folder.window
 	end
 
-	for i, file in ipairs(Folder:by_kind(Folder.CURRENT).window) do
+	for i, file in ipairs(folder.window) do
 		state.file_pos[tostring(file.url)] = i
 	end
 
