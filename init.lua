@@ -200,7 +200,7 @@ local function read_input_todo (arg_current_num)
 end
 
 
-local init_normal_action = ya.sync(function(state)
+local init = ya.sync(function(state)
 
 	state.file_pos = {}
 
@@ -253,7 +253,7 @@ return {
 
 		while true do
 			-- enter normal, keep or select mode
-			current_num = init_normal_action()
+			current_num = init()
 
 			if current_num == nil or current_num == 0 then
 				break
