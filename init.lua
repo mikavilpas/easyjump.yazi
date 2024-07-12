@@ -96,13 +96,11 @@ local toggle_ui = ya.sync(function(st)
 end)
 
 
-local apply = ya.sync(function(state, arg_cand)
-
+local function apply(arg_cand,cursor,offset)
 	local pos = tonumber(arg_cand)
-	local folder = Folder:by_kind(Folder.CURRENT)
-	ya.manager_emit("arrow",{ pos - folder.cursor - 1 + folder.offset})	
+	ya.manager_emit("arrow",{ pos - cursor - 1 + offset})	
 	return true
-end)
+end
 
 
 local update_double_first_key = ya.sync(function(state, str)
@@ -122,7 +120,7 @@ local function is_first_key_valid(key,current_num)
 	return false
 end
 
-local function read_input_todo (arg_current_num)
+local function read_input_todo (arg_current_num,cursor,offset)
 
 	local current_num = tonumber(arg_current_num)
 	local cand = nil
@@ -147,7 +145,7 @@ local function read_input_todo (arg_current_num)
 			if pos == nil or pos > current_num then
 				goto nextkey
 			else
-				return apply(pos, current_num)
+				return apply(pos,cursor,offset)
 			end
 		end		
 
@@ -168,7 +166,7 @@ local function read_input_todo (arg_current_num)
 			if pos == nil or pos > current_num then
 				goto nextkey
 			else
-				return apply(pos, current_num)
+				return apply(pos,cursor,offset)
 			end
 		end
 
@@ -180,18 +178,19 @@ end
 local init = ya.sync(function(state)
 
 	state.file_pos = {}
+	local folder = Folder:by_kind(Folder.CURRENT)
 
 	if #SINGLE_LABLES >= Current.area.h then
 		state.current_num = Current.area.h -- Fast path
 	else
-		state.current_num = #Folder:by_kind(Folder.CURRENT).window
+		state.current_num = #folder.window
 	end
 
 	for i, file in ipairs(Folder:by_kind(Folder.CURRENT).window) do
 		state.file_pos[tostring(file.url)] = i
 	end
 
-	return state.current_num
+	return state.current_num,folder.cursor,folder.offset
 end)
 
 local set_opts_default = ya.sync(function(state)
@@ -227,10 +226,11 @@ return {
 		local want_exit = false
 		local first_enter = true
 		local current_num
+		local cursor,offset
 
 		while true do
 			-- enter normal, keep or select mode
-			current_num = init()
+			current_num,cursor,offset = init()
 
 			if current_num == nil or current_num == 0 then
 				break
@@ -240,7 +240,7 @@ return {
 				toggle_ui()
 				first_enter = false 
 			end
-			want_exit = read_input_todo(current_num)
+			want_exit = read_input_todo(current_num,cursor,offset)
 
 			if want_exit == true then
 				break
