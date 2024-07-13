@@ -95,16 +95,11 @@ local toggle_ui = ya.sync(function(st)
 	ya.render()
 end)
 
-
 local update_double_first_key = ya.sync(function(state, str)
 	state.double_first_key = str
 end)
 
-local is_first_key_valid = ya.sync(function(state,key)
-	return state.first_key_of_lable[key]
-end)
-
-local function read_input_todo (arg_current_num,cursor,offset)
+local function read_input_todo (arg_current_num,cursor,offset,first_key_of_lable)
 
 	local current_num = tonumber(arg_current_num)
 	local cand = nil
@@ -148,7 +143,7 @@ local function read_input_todo (arg_current_num,cursor,offset)
 		-- hit the first double key
 		if key_num_count == 0 and current_num > #SINGLE_LABLES then
 			key = INPUT_KEY[cand]
-			if is_first_key_valid(key) then	 
+			if first_key_of_lable[key] then	 
 				key_num_count =  key_num_count + 1		
 				update_double_first_key(key) -- apply to the render change for first key
 			else
@@ -177,7 +172,7 @@ end
 local init = ya.sync(function(state)
 
 	state.file_pos = {}
-	state.first_key_of_lable = {}
+	local first_key_of_lable = {}
 	local folder = Folder:by_kind(Folder.CURRENT)
 
 	if #SINGLE_LABLES >= Current.area.h then
@@ -189,11 +184,11 @@ local init = ya.sync(function(state)
 	for i, file in ipairs(folder.window) do
 		state.file_pos[tostring(file.url)] = i
 		if state.current_num > #SINGLE_LABLES then
-			state.first_key_of_lable[NORMAL_DOUBLE_LABLES[i]:sub(1,1)] = ""
+			first_key_of_lable[NORMAL_DOUBLE_LABLES[i]:sub(1,1)] = ""
 		end
 	end
 
-	return state.current_num,folder.cursor,folder.offset
+	return state.current_num,folder.cursor,folder.offset,first_key_of_lable
 end)
 
 local set_opts_default = ya.sync(function(state)
@@ -209,7 +204,6 @@ local clear_state_str = ya.sync(function(state)
 	state.file_pos = nil
 	state.current_num = nil
 	state.double_first_key = nil
-	state.first_key_of_lable = nil
 end)
 
 return {
@@ -229,12 +223,10 @@ return {
 
 		local want_exit = false
 		local first_enter = true
-		local current_num
-		local cursor,offset
+
+		local current_num,cursor,offset,first_key_of_lable = init()
 
 		while true do
-			-- enter normal, keep or select mode
-			current_num,cursor,offset = init()
 
 			if current_num == nil or current_num == 0 then
 				break
@@ -244,7 +236,7 @@ return {
 				toggle_ui()
 				first_enter = false 
 			end
-			want_exit = read_input_todo(current_num,cursor,offset)
+			want_exit = read_input_todo(current_num,cursor,offset,first_key_of_lable)
 
 			if want_exit == true then
 				break
