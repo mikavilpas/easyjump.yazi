@@ -118,7 +118,7 @@ local function read_input_todo (arg_current_num,cursor,offset,first_key_of_lable
 
 		-- hit exit easyjump
 		if INPUT_KEY[cand] == "<Esc>" or INPUT_KEY[cand] == "z"  then
-			return true
+			return
 		end
 
 		-- hit singal key
@@ -129,7 +129,7 @@ local function read_input_todo (arg_current_num,cursor,offset,first_key_of_lable
 				goto nextkey
 			else
 				ya.manager_emit("arrow",{ pos - cursor - 1 + offset })	
-				return true
+				return
 			end
 		end		
 
@@ -160,7 +160,7 @@ local function read_input_todo (arg_current_num,cursor,offset,first_key_of_lable
 				goto nextkey
 			else
 				ya.manager_emit("arrow",{ pos - cursor - 1 + offset })	
-				return true
+				return
 			end
 		end
 
@@ -217,30 +217,21 @@ return {
 		end
 	end,
 
-	entry = function(_, args)
+	entry = function(_, _)
 
 		set_opts_default()
-
-		local want_exit = false
 
 		local current_num,cursor,offset,first_key_of_lable = init()
 
 		if current_num == nil or current_num == 0 then
-			goto exit
+			return
 		end
 	
 		toggle_ui()
 
-		while true do
-			want_exit = read_input_todo(current_num,cursor,offset,first_key_of_lable)
-			if want_exit == true then
-				break
-			end
-		end
+		read_input_todo(current_num,cursor,offset,first_key_of_lable)
 
 		toggle_ui()
 		clear_state_str()
-		
-		::exit::
 	end
 }
