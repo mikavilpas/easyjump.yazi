@@ -96,9 +96,9 @@ local toggle_ui = ya.sync(function(st)
 end)
 
 
-local function apply(arg_cand,cursor,offset)
+local function apply(arg_cand)
 	local pos = tonumber(arg_cand)
-	ya.manager_emit("arrow",{ pos - cursor - 1 + offset})	
+	ya.manager_emit("arrow",{ pos})	
 	return true
 end
 
@@ -107,18 +107,9 @@ local update_double_first_key = ya.sync(function(state, str)
 	state.double_first_key = str
 end)
 
-local function is_first_key_valid(key,current_num)
-	for i, value in ipairs(NORMAL_DOUBLE_LABLES) do
-		if i > current_num then
-			return false
-		end
-		if value:sub(1,1) == key then
-			return true
-		end
-	end
-
-	return false
-end
+local is_first_key_valid = ya.sync(function(state,key)
+	return state.first_key_of_lable[key]
+end)
 
 local function read_input_todo (arg_current_num,cursor,offset)
 
@@ -149,7 +140,7 @@ local function read_input_todo (arg_current_num,cursor,offset)
 			if pos == nil or pos > current_num then
 				goto nextkey
 			else
-				return apply(pos,cursor,offset)
+				return apply(pos - cursor - 1 + offset)
 			end
 		end		
 
@@ -163,7 +154,7 @@ local function read_input_todo (arg_current_num,cursor,offset)
 		-- hit the first double key
 		if key_num_count == 0 and current_num > #SINGLE_LABLES then
 			key = INPUT_KEY[cand]
-			if is_first_key_valid(key,current_num) then	 
+			if is_first_key_valid(key) then	 
 				key_num_count =  key_num_count + 1		
 				update_double_first_key(key) -- apply to the render change for first key
 			else
@@ -179,7 +170,7 @@ local function read_input_todo (arg_current_num,cursor,offset)
 			if pos == nil or pos > current_num then -- get the second double key fail, continue to get it
 				goto nextkey
 			else
-				return apply(pos,cursor,offset) -- apply jump action
+				return apply(pos - cursor - 1 + offset) -- apply jump action
 			end
 		end
 
@@ -191,6 +182,7 @@ end
 local init = ya.sync(function(state)
 
 	state.file_pos = {}
+	state.first_key_of_lable = {}
 	local folder = Folder:by_kind(Folder.CURRENT)
 
 	if #SINGLE_LABLES >= Current.area.h then
@@ -201,6 +193,9 @@ local init = ya.sync(function(state)
 
 	for i, file in ipairs(folder.window) do
 		state.file_pos[tostring(file.url)] = i
+		if state.current_num > #SINGLE_LABLES then
+			state.first_key_of_lable[NORMAL_DOUBLE_LABLES[i]:sub(1,1)] = ""
+		end
 	end
 
 	return state.current_num,folder.cursor,folder.offset
@@ -219,6 +214,7 @@ local clear_state_str = ya.sync(function(state)
 	state.file_pos = nil
 	state.current_num = nil
 	state.double_first_key = nil
+	state.first_key_of_lable = nil
 end)
 
 return {
