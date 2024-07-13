@@ -96,13 +96,6 @@ local toggle_ui = ya.sync(function(st)
 end)
 
 
-local function apply(arg_cand)
-	local pos = tonumber(arg_cand)
-	ya.manager_emit("arrow",{ pos})	
-	return true
-end
-
-
 local update_double_first_key = ya.sync(function(state, str)
 	state.double_first_key = str
 end)
@@ -140,7 +133,8 @@ local function read_input_todo (arg_current_num,cursor,offset)
 			if pos == nil or pos > current_num then
 				goto nextkey
 			else
-				return apply(pos - cursor - 1 + offset)
+				ya.manager_emit("arrow",{ pos - cursor - 1 + offset })	
+				return true
 			end
 		end		
 
@@ -170,7 +164,8 @@ local function read_input_todo (arg_current_num,cursor,offset)
 			if pos == nil or pos > current_num then -- get the second double key fail, continue to get it
 				goto nextkey
 			else
-				return apply(pos - cursor - 1 + offset) -- apply jump action
+				ya.manager_emit("arrow",{ pos - cursor - 1 + offset })	
+				return true
 			end
 		end
 
