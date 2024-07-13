@@ -99,9 +99,8 @@ local update_double_first_key = ya.sync(function(state, str)
 	state.double_first_key = str
 end)
 
-local function read_input_todo (arg_current_num,cursor,offset,first_key_of_lable)
+local function read_input_todo (current_num,cursor,offset,first_key_of_lable)
 
-	local current_num = tonumber(arg_current_num)
 	local cand = nil
 	local key
 	local key_num_count = 0
