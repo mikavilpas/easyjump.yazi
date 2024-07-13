@@ -222,32 +222,25 @@ return {
 		set_opts_default()
 
 		local want_exit = false
-		local first_enter = true
 
 		local current_num,cursor,offset,first_key_of_lable = init()
 
+		if current_num == nil or current_num == 0 then
+			goto exit
+		end
+	
+		toggle_ui()
+
 		while true do
-
-			if current_num == nil or current_num == 0 then
-				break
-			end
-
-			if first_enter then 
-				toggle_ui()
-				first_enter = false 
-			end
 			want_exit = read_input_todo(current_num,cursor,offset,first_key_of_lable)
-
 			if want_exit == true then
 				break
 			end
 		end
 
-
-		if first_enter == false then
-			toggle_ui()
-		end
-
+		toggle_ui()
 		clear_state_str()
+		
+		::exit::
 	end
 }
