@@ -40,7 +40,7 @@ local NORMAL_DOUBLE_LABLES = {
 
 local INPUT_KEY = {
 	"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n",
-	"o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "<Esc>"
+	"o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "<Esc>","<Backspace>"
 }
 
 local SINGLE_POS = {["k"] = 21, ["j"] = 22, ["x"] = 23, ["y"] = 24, ["q"] = 25, ["p"] = 1, ["b"] = 2, ["e"] = 3, ["t"] = 4, ["a"] = 5, ["o"] = 6, ["i"] = 7, ["n"] = 8, ["s"] = 9, ["r"] = 10, ["h"] = 11, ["l"] = 12, ["d"] = 13, ["c"] = 14, ["u"] = 15, ["m"] = 16, ["f"] = 17, ["g"] = 18, ["w"] = 19, ["v"] = 20}
@@ -52,7 +52,7 @@ local INPUT_CANDS = {
 	{ on = "k" }, { on = "l" }, { on = "m" }, { on = "n" }, { on = "o" },
 	{ on = "p" }, { on = "q" }, { on = "r" }, { on = "s" }, { on = "t" },
 	{ on = "u" }, { on = "v" }, { on = "w" }, { on = "x" }, { on = "y" },
-	{ on = "z" }, { on = "<Esc>" }
+	{ on = "z" }, { on = "<Esc>" },{ on = "<Backspace>" }
 }
 
 local toggle_ui = ya.sync(function(st)
@@ -131,14 +131,18 @@ local function read_input_todo (arg_current_num,cursor,offset)
 
 	while true do
 		cand = ya.which { cands = INPUT_CANDS, silent = true }
+
+		-- not candy key, continue get input
 		if cand == nil then
 			goto nextkey
 		end
 
+		-- hit exit easyjump
 		if INPUT_KEY[cand] == "<Esc>" or INPUT_KEY[cand] == "z"  then
 			return true
 		end
 
+		-- hit singal key
 		if current_num <= #SINGLE_LABLES then
 			key = INPUT_KEY[cand]	
 			pos = SINGLE_POS[key]
@@ -149,24 +153,33 @@ local function read_input_todo (arg_current_num,cursor,offset)
 			end
 		end		
 
+		-- hit backout a double key
+		if INPUT_KEY[cand] == "<Backspace>" and current_num > #SINGLE_LABLES then
+			key_num_count = 0 -- backout to get the first double key
+			update_double_first_key(nil) -- apply to the render change for first key
+			goto nextkey
+		end
+
+		-- hit the first double key
 		if key_num_count == 0 and current_num > #SINGLE_LABLES then
 			key = INPUT_KEY[cand]
-			if is_first_key_valid(key,current_num) then	
+			if is_first_key_valid(key,current_num) then	 
 				key_num_count =  key_num_count + 1		
-				update_double_first_key(key)
+				update_double_first_key(key) -- apply to the render change for first key
 			else
-				key_num_count = 0
+				key_num_count = 0 -- get the first double key fail, continue to get it
 			end
 			goto nextkey
 		end
 
+		-- hit the second double key
 		if key_num_count == 1 and current_num > #SINGLE_LABLES then
 			double_key = key .. INPUT_KEY[cand]
 			pos = DOUBLE_POS[double_key]
-			if pos == nil or pos > current_num then
+			if pos == nil or pos > current_num then -- get the second double key fail, continue to get it
 				goto nextkey
 			else
-				return apply(pos,cursor,offset)
+				return apply(pos,cursor,offset) -- apply jump action
 			end
 		end
 
@@ -174,7 +187,7 @@ local function read_input_todo (arg_current_num,cursor,offset)
 	end
 end
 
-
+-- init to record file position and the file num
 local init = ya.sync(function(state)
 
 	state.file_pos = {}
