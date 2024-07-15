@@ -174,11 +174,7 @@ local init = ya.sync(function(state)
 	local first_key_of_lable = {}
 	local folder = Folder:by_kind(Folder.CURRENT)
 
-	if #SINGLE_LABLES >= Current.area.h then
-		state.current_num = Current.area.h -- Fast path
-	else
-		state.current_num = #folder.window
-	end
+	state.current_num = #folder.window
 
 	for i, file in ipairs(folder.window) do
 		state.file_pos[tostring(file.url)] = i
