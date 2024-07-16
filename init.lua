@@ -172,7 +172,7 @@ local init = ya.sync(function(state)
 
 	state.file_pos = {}
 	local first_key_of_lable = {}
-	local folder = Folder:by_kind(Folder.CURRENT)
+	local folder = cx.active.current
 
 	state.current_num = #folder.window
 
