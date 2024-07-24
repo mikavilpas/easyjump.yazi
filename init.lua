@@ -57,40 +57,41 @@ local INPUT_CANDS = {
 
 local toggle_ui = ya.sync(function(st)
 
-	if st.icon or st.mode then
-		File.icon, Status.mode, st.icon, st.mode = st.icon, st.mode, nil, nil
+	if st.entity_lable_id or st.status_ej_id then
+		Entity:children_remove(st.entity_lable_id)
+		Status:children_remove(st.status_ej_id)
+		st.entity_lable_id = nil
+		st.status_ej_id = nil
+		Entity._inc = Entity._inc - 1
+		Status._inc = Status._inc - 1
 		ya.render()
 		return
 	end
 
-	st.icon, st.mode = File.icon, Status.mode
-
-	File.icon = function(self, file)
-
-		local icon = file:icon()
-		local span_icon_before = file:is_hovered() and ui.Span(" " .. file:icon().text .. " ") or ui.Span(" " .. file:icon().text .. " "):style(icon.style)
-		
+	local entity_lable = function(self)
+		local file = self._file
 		local pos = st.file_pos[tostring(file.url)]
 		if not pos then
-			return st.icon(self, file)
+			return ui.Line{}
 		elseif st.current_num > #SINGLE_LABLES then
 			if st.double_first_key ~= nil and NORMAL_DOUBLE_LABLES[pos]:sub(1,1) == st.double_first_key then
-				return ui.Line {span_icon_before,ui.Span(NORMAL_DOUBLE_LABLES[pos]:sub(1,1)):fg(st.opt_first_key_fg),ui.Span(NORMAL_DOUBLE_LABLES[pos]:sub(2,2) .. " "):fg(st.opt_icon_fg)}
+				return ui.Line {ui.Span(NORMAL_DOUBLE_LABLES[pos]:sub(1,1)):fg(st.opt_first_key_fg),ui.Span(NORMAL_DOUBLE_LABLES[pos]:sub(2,2) .. " "):fg(st.opt_icon_fg)}
 			else
-				return ui.Line {span_icon_before,ui.Span(NORMAL_DOUBLE_LABLES[pos] .. " "):fg(st.opt_icon_fg)}
+				return ui.Line {ui.Span(NORMAL_DOUBLE_LABLES[pos] .. " "):fg(st.opt_icon_fg)}
 			end
 		else
-			return ui.Line {span_icon_before,ui.Span(SINGLE_LABLES[pos] .. " "):fg(st.opt_icon_fg)}
+			return ui.Line {ui.Span(SINGLE_LABLES[pos] .. " "):fg(st.opt_icon_fg)}
 		end
 	end
+	st.entity_lable_id  = Entity:children_add(entity_lable,1001)
 
-	Status.mode = function(self)
-		local style = self.style()
+	local status_ej = function(self)
+		local style = self:style()
 		return ui.Line {
-			ui.Span(THEME.status.separator_open):fg(style.bg),
-			ui.Span(" EJ-" .. tostring(cx.active.mode):upper() .. " "):style(style),
+			ui.Span("[EJ] "):style(style),
 		}
 	end
+	st.status_ej_id = Status:children_add(status_ej,1001,Status.LEFT)
 
 	ya.render()
 end)
