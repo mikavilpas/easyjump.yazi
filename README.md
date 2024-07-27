@@ -4,7 +4,7 @@
 ### Linux
 
 ```bash
-git clone https://github.com/DreamMaoMao/easyjump.yazi.git ~/.config/yazi/plugins/easyjump.yazi
+git clone https://gitee.com/DreamMaoMao/easyjump.yazi.git ~/.config/yazi/plugins/easyjump.yazi
 ```
 
 ### Windows
@@ -13,7 +13,7 @@ With `Powershell` :
 
 ```powershell
 if (!(Test-Path $env:APPDATA\yazi\config\plugins\)) {mkdir $env:APPDATA\yazi\config\plugins\}
-git clone https://github.com/DreamMaoMao/easyjump.yazi.git $env:APPDATA\yazi\config\plugins\easyjump.yazi
+git clone https://gitee.com/DreamMaoMao/easyjump.yazi.git $env:APPDATA\yazi\config\plugins\easyjump.yazi
 ```
 
 ## Usage
