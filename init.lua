@@ -356,7 +356,7 @@ local GO_CANDS = {
 local function rel_position(file, view)
 	local folder
 
-	folder = Folder:by_kind(Folder.CURRENT)
+	folder = cx.active.current
 	if folder then
 		for i, f in ipairs(folder.window) do
 			if f.url == file.url then
@@ -369,7 +369,7 @@ local function rel_position(file, view)
 		return nil, nil
 	end
 
-	folder = Folder:by_kind(Folder.PARENT)
+	folder = cx.active.parent
 	if folder then
 		for i, f in ipairs(folder.window) do
 			if f.url == file.url then
@@ -378,7 +378,7 @@ local function rel_position(file, view)
 		end
 	end
 
-	folder = Folder:by_kind(Folder.PREVIEW)
+	folder = cx.active.preview.folder
 	if folder then
 		for i, f in ipairs(folder.window) do
 			if f.url == file.url then
@@ -431,19 +431,24 @@ end
 
 local toggle_ui = ya.sync(function(st)
 
+	if st.keep_hook then
+		ya.render()
+		return
+	end
+
 	if st.icon or st.mode then
-		File.icon, Status.mode, st.icon, st.mode = st.icon, st.mode, nil, nil
-		if st.type == "global" then
+		Entity.icon, Status.mode, st.icon, st.mode = st.icon, st.mode, nil, nil
+		if st.type == "global" and cx.active.preview.folder then
 			ya.manager_emit("peek", { force = true })
 		end
 		ya.render()
 		return
 	end
 
-	st.icon, st.mode = File.icon, Status.mode
+	st.icon, st.mode = Entity.icon, Status.mode
 
-	File.icon = function(self, file)
-
+	Entity.icon = function(self)
+		local file = self._file
 		local icon = file:icon()
 		local span_icon_before = file:is_hovered() and ui.Span(" " .. file:icon().text .. " ") or ui.Span(" " .. file:icon().text .. " "):style(icon.style)
 		
@@ -452,11 +457,11 @@ local toggle_ui = ya.sync(function(st)
 			if pos == nil then
 				return st.icon(self, file)
 			elseif view == "current" then
-				return ui.Line { ui.Span(GLOBAL_CURRENT_DOUBLE_KEYS[pos]):fg(st.opt_icon_fg),span_icon_before}
+				return ui.Line {span_icon_before, ui.Span(GLOBAL_CURRENT_DOUBLE_KEYS[pos].." "):fg(st.opt_icon_fg)}
 			elseif view == "parent" then
-				return ui.Line { ui.Span(GLOBAL_PARRENT_DOUBLE_KEYS[pos]):fg(st.opt_icon_fg),span_icon_before}
+				return ui.Line {span_icon_before, ui.Span(GLOBAL_PARRENT_DOUBLE_KEYS[pos].." "):fg(st.opt_icon_fg)}
 			elseif view == "preview" then
-				return ui.Line { ui.Span(GLOBAL_PREVIEW_DOUBLE_KEYS[pos]):fg(st.opt_icon_fg),span_icon_before}
+				return ui.Line {span_icon_before, ui.Span(GLOBAL_PREVIEW_DOUBLE_KEYS[pos].." "):fg(st.opt_icon_fg)}
 			end
 		else
 			local pos = rel_position(file, "current")
@@ -464,23 +469,23 @@ local toggle_ui = ya.sync(function(st)
 				return st.icon(self, file)
 			elseif st.current_num > #SINGLE_KEYS then
 				return st.type == nil and ui.Line {span_icon_before,ui.Span(NORMAL_DOUBLE_KEYS[pos] .. " "):fg(st.opt_icon_fg)}
-					or ui.Line{ui.Span(NORMAL_DOUBLE_KEYS[pos]):fg(st.opt_icon_fg),span_icon_before}
+					or ui.Line{span_icon_before,ui.Span(NORMAL_DOUBLE_KEYS[pos].." "):fg(st.opt_icon_fg)}
 			else
 				return st.type == nil and ui.Line {span_icon_before,ui.Span(SINGLE_KEYS[pos] .. " "):fg(st.opt_icon_fg)}
-					or ui.Line {ui.Span(SINGLE_KEYS[pos]):fg(st.opt_icon_fg),span_icon_before}
+					or ui.Line {span_icon_before,ui.Span(SINGLE_KEYS[pos].." "):fg(st.opt_icon_fg)}
 			end
 		end
 	end
 
 	Status.mode = function(self)
-		local style = self.style()
+		local style = self:style()
 		return ui.Line {
 			ui.Span(THEME.status.separator_open):fg(style.bg),
 			ui.Span(" KJ-" .. tostring(cx.active.mode):upper() .. " "):style(style),
 		}
 	end
 
-	if st.type == "global" then
+	if st.type == "global" and cx.active.preview.folder then
 		ya.manager_emit("peek", { force = true })
 	end
 
@@ -502,11 +507,11 @@ local function split_yazi_cmd_arg(cmd)
 end
 
 local function count_preview_files(st)
-	local folder = Folder:by_kind(Folder.CURRENT)
+	local folder = cx.active.current
 	-- TODO:under_cursor_file maybe nil,because aync task,floder may not ready
 	local under_cursor_file = folder.window[folder.cursor - folder.offset + 1]
 	if under_cursor_file and under_cursor_file.cha.is_dir then
-		st.preview_num = count_files(tostring(under_cursor_file.url), Preview.area.h)
+		st.preview_num = count_files(tostring(under_cursor_file.url), ui.Rect.default.h)
 	else
 		st.preview_num = 0
 	end
@@ -519,7 +524,7 @@ local apply = ya.sync(function(state, arg_cand, arg_current_num, arg_parent_num,
 	local parent_entry_num = tonumber(arg_parent_num)
 	local preview_entry_num = tonumber(arg_preview_num)
 	local go_num = #GO_CANDS
-	local folder = Folder:by_kind(Folder.CURRENT)
+	local folder = cx.active.current
 
 	-- hit specail key
 	if cand > (current_entry_num + parent_entry_num + preview_entry_num + go_num) then
@@ -543,7 +548,7 @@ local apply = ya.sync(function(state, arg_cand, arg_current_num, arg_parent_num,
 			ya.manager_emit("arrow", { "1" })
 			return false
 		elseif special_key_str == "<Space>" then
-			local under_cursor_file = Folder:by_kind(Folder.CURRENT).window[folder.cursor - folder.offset + 1]
+			local under_cursor_file = cx.active.current.window[folder.cursor - folder.offset + 1]
 			local toggle_state = under_cursor_file:is_selected() and "false" or "true"
 			ya.manager_emit("select", { state = toggle_state })
 			ya.manager_emit("arrow", { 1 })
@@ -593,17 +598,17 @@ local apply = ya.sync(function(state, arg_cand, arg_current_num, arg_parent_num,
 	if state.type == "global" then
 		-- hit current area
 		if cand <= current_entry_num then -- hit normal key
-			local current_folder = Folder:by_kind(Folder.CURRENT)
+			local current_folder = cx.active.current
 			ya.manager_emit("arrow", { cand - 1 + current_folder.offset - current_folder.cursor })
 		-- hit parent area
 		elseif cand > current_entry_num and cand <= (current_entry_num + parent_entry_num) then
-			local parent_folder = Folder:by_kind(Folder.PARENT)
+			local parent_folder = cx.active.parent
 			ya.manager_emit("leave", {})
 			ya.manager_emit("arrow", { cand - current_entry_num - 1 + parent_folder.offset - parent_folder.cursor })
 		-- hit preview area
 		elseif
 			cand > (current_entry_num + parent_entry_num) and cand <= (current_entry_num + parent_entry_num + preview_entry_num) then
-			local preview_folder = Folder:by_kind(Folder.PREVIEW)
+			local preview_folder = cx.active.preview.folder
 			ya.manager_emit("enter", {})
 			ya.manager_emit(
 				"arrow",
@@ -628,7 +633,7 @@ local apply = ya.sync(function(state, arg_cand, arg_current_num, arg_parent_num,
 	-- apply select mode
 	if state.type == "select" then
 		if cand <= current_entry_num then -- hit normal key
-			local folder = Folder:by_kind(Folder.CURRENT)
+			local folder = cx.active.current
 			ya.manager_emit("arrow", { cand - 1 + folder.offset - folder.cursor })
 		end
 
@@ -642,7 +647,7 @@ local apply = ya.sync(function(state, arg_cand, arg_current_num, arg_parent_num,
 
 	-- keep mode will auto enter when select folder and continue keep mode
 	if state.type == "keep" and folder.window[cand].cha.is_dir then
-		local folder = Folder:by_kind(Folder.CURRENT)
+		local folder = cx.active.current
 		ya.manager_emit("enter", {})
 		return false
 	else
@@ -731,25 +736,25 @@ local init_global_action = ya.sync(function(state,arg_times)
 	state.times = arg_times
 	state.type = "global"
 	-- caculate file numbers of current window
-	state.current_num = #Folder:by_kind(Folder.CURRENT).window
-	if state.current_num <= Current.area.h then -- Maybe the folder has not been full loaded yet
-		state.current_num = count_files(cx.active.current.cwd, Current.area.h)
+	state.current_num = #cx.active.current.window
+	if state.current_num <= ui.Rect.default.h then -- Maybe the folder has not been full loaded yet
+		state.current_num = count_files(cx.active.current.cwd, ui.Rect.default.h)
 	end
 
 	-- caculate file numbers of parent window
-	if Folder:by_kind(Folder.PARENT) ~= nil then
-		state.parent_num = #Folder:by_kind(Folder.PARENT).window
-		if state.parent_num <= Parent.area.h then -- Maybe the folder has not been full loaded yet
-			state.parent_num = count_files(cx.active.parent.cwd, Parent.area.h)
+	if cx.active.parent ~= nil then
+		state.parent_num = #cx.active.parent.window
+		if state.parent_num <= ui.Rect.default.h then -- Maybe the folder has not been full loaded yet
+			state.parent_num = count_files(cx.active.parent.cwd, ui.Rect.default.h)
 		end
 	else
 		state.parent_num = 0
 	end
 
 	-- caculate file numbers of preview window
-	if Folder:by_kind(Folder.PREVIEW) ~= nil then
-		state.preview_num = #Folder:by_kind(Folder.PREVIEW).window
-		if state.preview_num <= Parent.area.h then -- Maybe the folder has not been full loaded yet
+	if cx.active.preview.folder ~= nil then
+		state.preview_num = #cx.active.preview.folder.window
+		if state.preview_num <= ui.Rect.default.h then -- Maybe the folder has not been full loaded yet
 			count_preview_files(state)
 		end
 	else
@@ -762,14 +767,11 @@ end)
 
 local init_normal_action = ya.sync(function(state,action)
 
-	if #SINGLE_KEYS >= Current.area.h then
-		state.current_num = Current.area.h -- Fast path
-	else
-		state.current_num = #Folder:by_kind(Folder.CURRENT).window
-		if state.current_num <= Current.area.h then -- Maybe the folder has not been full loaded yet
-			state.current_num = count_files(cx.active.current.cwd, Current.area.h)
-		end
+	state.current_num = #cx.active.current.window
+	if state.current_num < ui.Rect.default.h then -- Maybe the folder has not been full loaded yet
+		state.current_num = count_files(cx.active.current.cwd, ui.Rect.default.h)
 	end
+
 	state.type = action
 	return state.current_num
 end)
@@ -780,8 +782,50 @@ local set_opts_default = ya.sync(function(state)
 	end
 end)
 
+local go_again = ya.sync(function(state)
+	state.again = true
+end)
+
+local set_keep_hook = ya.sync(function(state,status)
+	state.keep_hook = status
+end)
+
+local remove_cwd_status_watch = ya.sync(function(state)
+	Header:children_remove(state.header_status_id)
+end)
+
+local clear_state = ya.sync(function (state)
+	state.again = nil
+	state.keep_hook = nil
+	state.header_status_id = nil
+	state.times = nil
+	state.current_num = nil
+	state.parent_num = nil
+	state.parent_num = nil
+	state.type = nil
+end)
+
+local add_cwd_status_watch = ya.sync(function(state)
+
+	if state.header_status_id ~= nil then
+		return
+	end
+
+	local function cwd_status(self)
+			
+		if #cx.active.current.window >0 and state.again then
+			state.again = false
+			local times = state.times and state.times or ""
+			ya.manager_emit("plugin", { "keyjump", args = ya.quote(state.type).." "..times})	
+		end
+		return {}
+	end
+	state.header_status_id = Header:children_add(cwd_status,200,Header.LEFT)
+end)
+
 return {
 	setup = function(state, opts)
+
 		-- Save the user configuration to the plugin's state
 		if (opts ~= nil and opts.icon_fg ~= nil ) then
 			state.opt_icon_fg  = opts.icon_fg
@@ -791,36 +835,33 @@ return {
 	entry = function(_, args)
 
 		set_opts_default()
+		add_cwd_status_watch()
 
 		local action = args[1]
 		local want_exit = false
-		local first_enter = true
 
-		while true do
-			-- enter normal, keep or select mode
-			if not action or action == "keep" or action == "select" then
-				local current_num = init_normal_action(action)
-				if first_enter then 
-					toggle_ui()
-					first_enter = false 
-				end
-				want_exit = read_input_todo(current_num, "0", "0", action)
-			end
-
-			-- enter global mode
-			if action == "global" then
-				local times = args[2]
-				local data = init_global_action(times)
-				if first_enter then 
-					toggle_ui()
-					first_enter = false 
-				end
-				want_exit = read_input_todo(data[1], data[2], data[3], action)
-			end
-			
-			if want_exit == true then
-				break
-			end
+		-- enter normal, keep or select mode
+		if not action or action == "keep" or action == "select" then
+			local current_num = init_normal_action(action)
+			toggle_ui()
+			want_exit = read_input_todo(current_num, "0", "0", action)
+		end
+		-- enter global mode
+		if action == "global" then
+			local times = args[2]
+			local data = init_global_action(times)
+			toggle_ui()
+			want_exit = read_input_todo(data[1], data[2], data[3], action)
+		end
+		
+		
+		if want_exit == false then
+			set_keep_hook(true)
+			go_again()
+		else
+			set_keep_hook(false)
+			remove_cwd_status_watch()
+			clear_state()
 		end
 
 		toggle_ui()
