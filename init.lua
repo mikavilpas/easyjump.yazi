@@ -88,10 +88,10 @@ local toggle_ui = ya.sync(function(st)
 	local status_ej = function(self)
 		local style = self:style()
 		return ui.Line {
-			ui.Span("[EJ] "):style(style),
+			ui.Span("[EJ] "):style(style.main),
 		}
 	end
-	st.status_ej_id = Status:children_add(status_ej,2001,Status.LEFT)
+	st.status_ej_id = Status:children_add(status_ej,1001,Status.LEFT)
 
 	ya.render()
 end)
