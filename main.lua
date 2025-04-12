@@ -128,7 +128,7 @@ local function read_input_todo (current_num,cursor,offset,first_key_of_lable)
 			if pos == nil or pos > current_num then
 				goto nextkey
 			else
-				ya.manager_emit("arrow",{ pos - cursor - 1 + offset })	
+				ya.mgr_emit("arrow",{ pos - cursor - 1 + offset })	
 				return
 			end
 		end		
@@ -159,7 +159,7 @@ local function read_input_todo (current_num,cursor,offset,first_key_of_lable)
 			if pos == nil or pos > current_num then -- get the second double key fail, continue to get it
 				goto nextkey
 			else
-				ya.manager_emit("arrow",{ pos - cursor - 1 + offset })	
+				ya.mgr_emit("arrow",{ pos - cursor - 1 + offset })	
 				return
 			end
 		end
