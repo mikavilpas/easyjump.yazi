@@ -1,0 +1,22 @@
+name: eslint
+on: [pull_request]
+jobs:
+  eslint:
+    name: runner / eslint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5.0.0
+      - uses: pnpm/action-setup@v4.1.0
+        with:
+          # https://github.com/pnpm/action-setup?tab=readme-ov-file#use-cache-to-reduce-installation-time
+          run_install: false
+      - uses: actions/setup-node@v4.4.0
+        with:
+          node-version-file: .nvmrc
+          cache: "pnpm"
+      - run: pnpm install
+      - run: pnpm run eslint
+        working-directory: integration-tests

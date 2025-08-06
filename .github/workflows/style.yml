@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+
+name: Style checking
+
+on:
+  pull_request: ~
+  push:
+    branches:
+      - main
+
+jobs:
+  prettier:
+    runs-on: ubuntu-22.04
+    name: prettier
+    steps:
+      - uses: actions/checkout@v5.0.0
+      - uses: pnpm/action-setup@v4.1.0
+        with:
+          # https://github.com/pnpm/action-setup?tab=readme-ov-file#use-cache-to-reduce-installation-time
+          run_install: false
+      - uses: actions/setup-node@v4.4.0
+        with:
+          node-version-file: .nvmrc
+          cache: "pnpm"
+      - run: pnpm install
+      - run: pnpm exec prettier --check .
+
+  stylua:
+    name: stylua
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v5.0.0
+      - uses: JohnnyMorganz/stylua-action@v4.1.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: v2.0.2
+          # CLI arguments
+          args: --color always --check .
