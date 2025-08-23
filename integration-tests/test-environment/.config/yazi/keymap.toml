@@ -1,0 +1,8 @@
+# https://yazi-rs.github.io/docs/configuration/overview
+# https://yazi-rs.github.io/docs/configuration/keymap
+"$schema" = "https://yazi-rs.github.io/schemas/keymap.json"
+
+[[mgr.prepend_keymap]]
+on = ["i"]
+run = "plugin easyjump"
+desc = "easyjump"

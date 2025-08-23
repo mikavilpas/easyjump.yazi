@@ -1,0 +1,127 @@
+---
+name: Run tests
+on:
+  pull_request: ~
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Run tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5.0.0
+      - name: Set up dependencies
+        run: |
+          # ripgrep is a dependency of telescope and fzf-lua
+          sudo apt-get update
+          sudo apt-get install ripgrep
+          rg --version
+
+          # fd is a dependency of telescope and fzf-lua
+          # https://github.com/sharkdp/fd?tab=readme-ov-file#on-ubuntu
+          # make sure it's available as `fd` - there seems to be some conflict in Ubuntu
+          sudo apt-get install fd-find
+          sudo ln -s $(which fdfind) /usr/local/bin/fd
+          fd --version
+
+          # install fzf
+          sudo apt install fzf
+          fzf --version
+
+          # realpath is used to resolve relative paths in yazi.nvim
+          which realpath || {
+            # just fail with an error message if realpath is not found
+            echo "realpath is not installed, but it should be part of GNU coreutils and included in Ubuntu"
+            exit 1
+          }
+
+      - name: Compile and install `yazi-fm` from source
+        uses: baptiste0928/cargo-install@v3.3.1
+        with:
+          # yazi-fm is the `yazi` executable
+          crate: yazi-fm
+          git: https://github.com/sxyazi/yazi
+          commit:
+            # https://github.com/sxyazi/yazi/commit/d5f225bc4adc22231b6e254431183518747fadb9 (2025-08-05)
+            d5f225bc4adc22231b6e254431183518747fadb9
+          # tag: v25.5.31
+
+      - name: Compile and install yazi from source
+        uses: baptiste0928/cargo-install@v3.3.1
+        with:
+          # yazi-cli is the `ya` command line interface
+          crate: yazi-cli
+          git: https://github.com/sxyazi/yazi
+          commit:
+            # https://github.com/sxyazi/yazi/commit/d5f225bc4adc22231b6e254431183518747fadb9 (2025-08-05)
+            d5f225bc4adc22231b6e254431183518747fadb9
+          # tag: v25.5.31
+
+      - name: Make sure yazi and ya are installed
+        run: |
+          echo "Cargo binaries:"
+          ls -laR $HOME/.cargo/bin
+
+          echo "cargo-install binaries:"
+          ls -laR $HOME/.cargo-install/
+
+          echo "PATH:"
+          echo $PATH
+
+          which yazi || {
+            echo "yazi is not installed, but it should be installed by the previous step"
+            exit 1
+          }
+          which ya || {
+            echo "ya is not installed, but it should be installed by the previous step"
+            exit 1
+          }
+
+      - uses: pnpm/action-setup@v4.1.0
+        with:
+          # https://github.com/pnpm/action-setup?tab=readme-ov-file#use-cache-to-reduce-installation-time
+          run_install: false
+      - uses: actions/setup-node@v4.4.0
+        with:
+          node-version-file: .nvmrc
+          cache: "pnpm"
+      - run: pnpm install
+
+      # need to work around https://github.com/cypress-io/github-action/issues/1246
+      - run: pnpm --filter integration-tests exec cypress install
+
+      - name: Cypress test
+        uses: cypress-io/github-action@v6
+        with:
+          install: false
+          command: pnpm tui run
+
+      - uses: actions/upload-artifact@v4.6.2
+        # add the line below to store screenshots only on failures
+        # if: failure()
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: integration-tests/cypress/screenshots
+          if-no-files-found: ignore # 'warn' or 'error' are also available, defaults to `warn`
+
+  automerge:
+    needs: build
+    name: Automerge Dependabot PRs
+    runs-on: ubuntu-latest
+    permissions:
+      # NOTE: no special token needs to be generated if these permissions are
+      # used. However, "Workflow permissions > Allow GitHub Actions to create
+      # and approve pull requests" needs to be enabled under
+      # github.com/user/repo/settings/actions
+      # https://github.com/fastify/github-action-merge-dependabot/issues/359
+      pull-requests: write
+      contents: write
+    steps:
+      - uses: fastify/github-action-merge-dependabot@v3.11.1
+        with:
+          # https://github.com/fastify/github-action-merge-dependabot?tab=readme-ov-file
+          github-token: ${{ secrets.GITHUB_TOKEN }}
