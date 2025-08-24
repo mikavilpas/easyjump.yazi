@@ -1,0 +1,14 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
+  "runtime": {
+    "version": "LuaJIT",
+    "pathStrict": true
+  },
+  "workspace": {
+    "checkThirdParty": false,
+    "library": ["./yazi-plugins/types.yazi/main.lua"]
+  },
+  "type": {
+    "checkTableShape": true
+  }
+}
