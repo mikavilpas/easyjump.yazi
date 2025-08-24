@@ -1,11 +1,11 @@
 -- stylua: ignore
-local SINGLE_LABLES = {
+local SINGLE_LABELS = {
 	"p", "b", "e", "t", "a", "o", "i", "n", "s", "r", "h", "l", "d", "c",
 	"u", "m", "f", "g", "w", "v", "k", "j", "x", "y", "q"
 }
 
 -- stylua: ignore
-local NORMAL_DOUBLE_LABLES = {
+local NORMAL_DOUBLE_LABELS = {
 	"au", "ai", "ao", "ah", "aj", "ak", "al", "an",
 	"su", "si", "so", "sh", "sj", "sk", "sl", "sn",
 	"du", "di", "do", "dh", "dj", "dk", "dl", "dn",
@@ -285,10 +285,10 @@ local INPUT_CANDS = {
 }
 
 local toggle_ui = ya.sync(function(st)
-	if st.entity_lable_id or st.status_ej_id then
-		Entity:children_remove(st.entity_lable_id)
+	if st.entity_label_id or st.status_ej_id then
+		Entity:children_remove(st.entity_label_id)
 		Status:children_remove(st.status_ej_id)
-		st.entity_lable_id = nil
+		st.entity_label_id = nil
 		st.status_ej_id = nil
 		Entity._inc = Entity._inc - 1
 		Status._inc = Status._inc - 1
@@ -296,25 +296,25 @@ local toggle_ui = ya.sync(function(st)
 		return
 	end
 
-	local entity_lable = function(self)
+	local entity_label = function(self)
 		local file = self._file
 		local pos = st.file_pos[tostring(file.url)]
 		if not pos then
 			return ui.Line({})
-		elseif st.current_num > #SINGLE_LABLES then
-			if st.double_first_key ~= nil and NORMAL_DOUBLE_LABLES[pos]:sub(1, 1) == st.double_first_key then
+		elseif st.current_num > #SINGLE_LABELS then
+			if st.double_first_key ~= nil and NORMAL_DOUBLE_LABELS[pos]:sub(1, 1) == st.double_first_key then
 				return ui.Line({
-					ui.Span(NORMAL_DOUBLE_LABLES[pos]:sub(1, 1)):fg(st.opt_first_key_fg),
-					ui.Span(NORMAL_DOUBLE_LABLES[pos]:sub(2, 2) .. " "):fg(st.opt_icon_fg),
+					ui.Span(NORMAL_DOUBLE_LABELS[pos]:sub(1, 1)):fg(st.opt_first_key_fg),
+					ui.Span(NORMAL_DOUBLE_LABELS[pos]:sub(2, 2) .. " "):fg(st.opt_icon_fg),
 				})
 			else
-				return ui.Line({ ui.Span(NORMAL_DOUBLE_LABLES[pos] .. " "):fg(st.opt_icon_fg) })
+				return ui.Line({ ui.Span(NORMAL_DOUBLE_LABELS[pos] .. " "):fg(st.opt_icon_fg) })
 			end
 		else
-			return ui.Line({ ui.Span(SINGLE_LABLES[pos] .. " "):fg(st.opt_icon_fg) })
+			return ui.Line({ ui.Span(SINGLE_LABELS[pos] .. " "):fg(st.opt_icon_fg) })
 		end
 	end
-	st.entity_lable_id = Entity:children_add(entity_lable, 2001)
+	st.entity_label_id = Entity:children_add(entity_label, 2001)
 
 	local status_ej = function(self)
 		local style = self:style()
@@ -331,7 +331,7 @@ local update_double_first_key = ya.sync(function(state, str)
 	state.double_first_key = str
 end)
 
-local function read_input_todo(current_num, cursor, offset, first_key_of_lable)
+local function read_input_todo(current_num, cursor, offset, first_key_of_label)
 	local cand = nil
 	local key
 	local key_num_count = 0
@@ -351,8 +351,8 @@ local function read_input_todo(current_num, cursor, offset, first_key_of_lable)
 			return
 		end
 
-		-- hit singal key
-		if current_num <= #SINGLE_LABLES then
+		-- hit single key
+		if current_num <= #SINGLE_LABELS then
 			key = INPUT_KEY[cand]
 			pos = SINGLE_POS[key]
 			if pos == nil or pos > current_num then
@@ -364,16 +364,16 @@ local function read_input_todo(current_num, cursor, offset, first_key_of_lable)
 		end
 
 		-- hit backout a double key
-		if INPUT_KEY[cand] == "<Backspace>" and current_num > #SINGLE_LABLES then
+		if INPUT_KEY[cand] == "<Backspace>" and current_num > #SINGLE_LABELS then
 			key_num_count = 0 -- backout to get the first double key
 			update_double_first_key(nil) -- apply to the render change for first key
 			goto nextkey
 		end
 
 		-- hit the first double key
-		if key_num_count == 0 and current_num > #SINGLE_LABLES then
+		if key_num_count == 0 and current_num > #SINGLE_LABELS then
 			key = INPUT_KEY[cand]
-			if first_key_of_lable[key] then
+			if first_key_of_label[key] then
 				key_num_count = key_num_count + 1
 				update_double_first_key(key) -- apply to the render change for first key
 			else
@@ -383,7 +383,7 @@ local function read_input_todo(current_num, cursor, offset, first_key_of_lable)
 		end
 
 		-- hit the second double key
-		if key_num_count == 1 and current_num > #SINGLE_LABLES then
+		if key_num_count == 1 and current_num > #SINGLE_LABELS then
 			double_key = key .. INPUT_KEY[cand]
 			pos = DOUBLE_POS[double_key]
 			if pos == nil or pos > current_num then -- get the second double key fail, continue to get it
@@ -401,19 +401,19 @@ end
 -- init to record file position and the file num
 local init = ya.sync(function(state)
 	state.file_pos = {}
-	local first_key_of_lable = {}
+	local first_key_of_label = {}
 	local folder = cx.active.current
 
 	state.current_num = #folder.window
 
 	for i, file in ipairs(folder.window) do
 		state.file_pos[tostring(file.url)] = i
-		if state.current_num > #SINGLE_LABLES then
-			first_key_of_lable[NORMAL_DOUBLE_LABLES[i]:sub(1, 1)] = ""
+		if state.current_num > #SINGLE_LABELS then
+			first_key_of_label[NORMAL_DOUBLE_LABELS[i]:sub(1, 1)] = ""
 		end
 	end
 
-	return state.current_num, folder.cursor, folder.offset, first_key_of_lable
+	return state.current_num, folder.cursor, folder.offset, first_key_of_label
 end)
 
 local set_opts_default = ya.sync(function(state)
@@ -445,7 +445,7 @@ return {
 	entry = function(_, _)
 		set_opts_default()
 
-		local current_num, cursor, offset, first_key_of_lable = init()
+		local current_num, cursor, offset, first_key_of_label = init()
 
 		if current_num == nil or current_num == 0 then
 			return
@@ -453,7 +453,7 @@ return {
 
 		toggle_ui()
 
-		read_input_todo(current_num, cursor, offset, first_key_of_lable)
+		read_input_todo(current_num, cursor, offset, first_key_of_label)
 
 		toggle_ui()
 		clear_state_str()
