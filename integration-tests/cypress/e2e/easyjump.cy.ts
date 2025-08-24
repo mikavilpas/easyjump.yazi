@@ -15,12 +15,15 @@ describe("easyjump", () => {
       // wait for the yazi ui to be visible. It will select the first file
       // automatically
       cy.contains("NOR")
-
-      // activate the easyjump plugin. yazi will prompt which file to jump to
-      cy.typeIntoTerminal("i")
       isFileSelected(
         term.dir.contents["dir-with-jumpable-files"].contents.file1.name,
       )
+
+      // activate the easyjump plugin. yazi will prompt which file to jump to
+      cy.typeIntoTerminal("i")
+
+      // the easyjump mode indicator must be visible
+      cy.contains("[EJ]")
 
       textIsVisibleWithColor("b", candidateColor)
       cy.typeIntoTerminal("b")
