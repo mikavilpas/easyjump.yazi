@@ -70,5 +70,5 @@ run = "plugin easyjump"
 desc = "easyjump"
 ```
 
-When you see some character(singal character or double character) in left of the
+When you see some character(single character or double character) in left of the
 entry. Press the key of the character will jump to the corresponding entry
