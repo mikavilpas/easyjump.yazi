@@ -1,15 +1,5 @@
 import { defineConfig } from "cypress"
 import fs from "fs"
-import { readFile, rm } from "fs/promises"
-import path from "path"
-import { fileURLToPath } from "url"
-import { inspect } from "util"
-
-const __dirname = fileURLToPath(new URL(".", import.meta.resolve(".")))
-
-const yaziLogFile = path.resolve(__dirname, "test-environment/.repro/yazi.log")
-
-console.log(`yaziLogFile: ${yaziLogFile}`)
 
 export default defineConfig({
   e2e: {
@@ -28,32 +18,6 @@ export default defineConfig({
             return fs.unlinkSync(results.video)
           }
         }
-      })
-
-      on("task", {
-        async removeYaziLog(): Promise<null> {
-          try {
-            await rm(yaziLogFile)
-          } catch (err) {
-            if (err.code !== "ENOENT") {
-              console.error(err)
-            }
-          }
-          return null // something must be returned
-        },
-        async showYaziLog(): Promise<null> {
-          try {
-            const log = await readFile(yaziLogFile, "utf-8")
-            console.log(
-              `${yaziLogFile}`,
-              inspect(log.split("\n"), { maxArrayLength: null, colors: true }),
-            )
-            return null
-          } catch (err) {
-            console.error(err)
-            return null // something must be returned
-          }
-        },
       })
     },
     experimentalRunAllSpecs: true,
