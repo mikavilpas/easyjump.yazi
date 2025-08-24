@@ -8,6 +8,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "pnpm --filter ./integration-tests/ dev",
+    "postinstall": "git submodule update --init --recursive",
     "tui": "pnpm --filter ./integration-tests/ exec tui"
   },
   "devDependencies": {
