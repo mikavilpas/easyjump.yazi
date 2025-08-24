@@ -83,177 +83,183 @@ local INPUT_CANDS = {
 }
 
 local toggle_ui = ya.sync(function(st)
-	if st.entity_label_id or st.status_ej_id then
-		Entity:children_remove(st.entity_label_id)
-		Status:children_remove(st.status_ej_id)
-		st.entity_label_id = nil
-		st.status_ej_id = nil
-		Entity._inc = Entity._inc - 1
-		Status._inc = Status._inc - 1
-		ui.render()
-		return
-	end
+  if st.entity_label_id or st.status_ej_id then
+    Entity:children_remove(st.entity_label_id)
+    Status:children_remove(st.status_ej_id)
+    st.entity_label_id = nil
+    st.status_ej_id = nil
+    Entity._inc = Entity._inc - 1
+    Status._inc = Status._inc - 1
+    ui.render()
+    return
+  end
 
-	local entity_label = function(self)
-		local file = self._file
-		local pos = st.file_pos[tostring(file.url)]
-		if not pos then
-			return ui.Line({})
-		elseif st.current_num > #SINGLE_LABELS then
-			if st.double_first_key ~= nil and NORMAL_DOUBLE_LABELS[pos]:sub(1, 1) == st.double_first_key then
-				return ui.Line({
-					ui.Span(NORMAL_DOUBLE_LABELS[pos]:sub(1, 1)):fg(st.opt_first_key_fg),
-					ui.Span(NORMAL_DOUBLE_LABELS[pos]:sub(2, 2) .. " "):fg(st.opt_icon_fg),
-				})
-			else
-				return ui.Line({ ui.Span(NORMAL_DOUBLE_LABELS[pos] .. " "):fg(st.opt_icon_fg) })
-			end
-		else
-			return ui.Line({ ui.Span(SINGLE_LABELS[pos] .. " "):fg(st.opt_icon_fg) })
-		end
-	end
-	st.entity_label_id = Entity:children_add(entity_label, 2001)
+  local entity_label = function(self)
+    local file = self._file
+    local pos = st.file_pos[tostring(file.url)]
+    if not pos then
+      return ui.Line({})
+    elseif st.current_num > #SINGLE_LABELS then
+      if
+        st.double_first_key ~= nil
+        and NORMAL_DOUBLE_LABELS[pos]:sub(1, 1) == st.double_first_key
+      then
+        return ui.Line({
+          ui.Span(NORMAL_DOUBLE_LABELS[pos]:sub(1, 1)):fg(st.opt_first_key_fg),
+          ui.Span(NORMAL_DOUBLE_LABELS[pos]:sub(2, 2) .. " ")
+            :fg(st.opt_icon_fg),
+        })
+      else
+        return ui.Line({
+          ui.Span(NORMAL_DOUBLE_LABELS[pos] .. " "):fg(st.opt_icon_fg),
+        })
+      end
+    else
+      return ui.Line({ ui.Span(SINGLE_LABELS[pos] .. " "):fg(st.opt_icon_fg) })
+    end
+  end
+  st.entity_label_id = Entity:children_add(entity_label, 2001)
 
-	local status_ej = function(self)
-		local style = self:style()
-		return ui.Line({
-			ui.Span("[EJ] "):style(style.main),
-		})
-	end
-	st.status_ej_id = Status:children_add(status_ej, 1001, Status.LEFT)
+  local status_ej = function(self)
+    local style = self:style()
+    return ui.Line({
+      ui.Span("[EJ] "):style(style.main),
+    })
+  end
+  st.status_ej_id = Status:children_add(status_ej, 1001, Status.LEFT)
 
-	ui.render()
+  ui.render()
 end)
 
 local update_double_first_key = ya.sync(function(state, str)
-	state.double_first_key = str
+  state.double_first_key = str
 end)
 
 local function read_input_todo(current_num, cursor, offset, first_key_of_label)
-	local cand = nil
-	local key
-	local key_num_count = 0
-	local pos
-	local double_key
+  local cand = nil
+  local key
+  local key_num_count = 0
+  local pos
+  local double_key
 
-	while true do
-		cand = ya.which({ cands = INPUT_CANDS, silent = true })
+  while true do
+    cand = ya.which({ cands = INPUT_CANDS, silent = true })
 
-		-- not candy key, continue get input
-		if cand == nil then
-			goto nextkey
-		end
+    -- not candy key, continue get input
+    if cand == nil then
+      goto nextkey
+    end
 
-		-- hit exit easyjump
-		if INPUT_KEY[cand] == "<Esc>" or INPUT_KEY[cand] == "z" then
-			return
-		end
+    -- hit exit easyjump
+    if INPUT_KEY[cand] == "<Esc>" or INPUT_KEY[cand] == "z" then
+      return
+    end
 
-		-- hit single key
-		if current_num <= #SINGLE_LABELS then
-			key = INPUT_KEY[cand]
-			pos = SINGLE_POS[key]
-			if pos == nil or pos > current_num then
-				goto nextkey
-			else
-				ya.mgr_emit("arrow", { pos - cursor - 1 + offset })
-				return
-			end
-		end
+    -- hit single key
+    if current_num <= #SINGLE_LABELS then
+      key = INPUT_KEY[cand]
+      pos = SINGLE_POS[key]
+      if pos == nil or pos > current_num then
+        goto nextkey
+      else
+        ya.mgr_emit("arrow", { pos - cursor - 1 + offset })
+        return
+      end
+    end
 
-		-- hit backout a double key
-		if INPUT_KEY[cand] == "<Backspace>" and current_num > #SINGLE_LABELS then
-			key_num_count = 0 -- backout to get the first double key
-			update_double_first_key(nil) -- apply to the render change for first key
-			goto nextkey
-		end
+    -- hit backout a double key
+    if INPUT_KEY[cand] == "<Backspace>" and current_num > #SINGLE_LABELS then
+      key_num_count = 0 -- backout to get the first double key
+      update_double_first_key(nil) -- apply to the render change for first key
+      goto nextkey
+    end
 
-		-- hit the first double key
-		if key_num_count == 0 and current_num > #SINGLE_LABELS then
-			key = INPUT_KEY[cand]
-			if first_key_of_label[key] then
-				key_num_count = key_num_count + 1
-				update_double_first_key(key) -- apply to the render change for first key
-			else
-				key_num_count = 0 -- get the first double key fail, continue to get it
-			end
-			goto nextkey
-		end
+    -- hit the first double key
+    if key_num_count == 0 and current_num > #SINGLE_LABELS then
+      key = INPUT_KEY[cand]
+      if first_key_of_label[key] then
+        key_num_count = key_num_count + 1
+        update_double_first_key(key) -- apply to the render change for first key
+      else
+        key_num_count = 0 -- get the first double key fail, continue to get it
+      end
+      goto nextkey
+    end
 
-		-- hit the second double key
-		if key_num_count == 1 and current_num > #SINGLE_LABELS then
-			double_key = key .. INPUT_KEY[cand]
-			pos = DOUBLE_POS[double_key]
-			if pos == nil or pos > current_num then -- get the second double key fail, continue to get it
-				goto nextkey
-			else
-				ya.mgr_emit("arrow", { pos - cursor - 1 + offset })
-				return
-			end
-		end
+    -- hit the second double key
+    if key_num_count == 1 and current_num > #SINGLE_LABELS then
+      double_key = key .. INPUT_KEY[cand]
+      pos = DOUBLE_POS[double_key]
+      if pos == nil or pos > current_num then -- get the second double key fail, continue to get it
+        goto nextkey
+      else
+        ya.mgr_emit("arrow", { pos - cursor - 1 + offset })
+        return
+      end
+    end
 
-		::nextkey::
-	end
+    ::nextkey::
+  end
 end
 
 -- init to record file position and the file num
 local init = ya.sync(function(state)
-	state.file_pos = {}
-	local first_key_of_label = {}
-	local folder = cx.active.current
+  state.file_pos = {}
+  local first_key_of_label = {}
+  local folder = cx.active.current
 
-	state.current_num = #folder.window
+  state.current_num = #folder.window
 
-	for i, file in ipairs(folder.window) do
-		state.file_pos[tostring(file.url)] = i
-		if state.current_num > #SINGLE_LABELS then
-			first_key_of_label[NORMAL_DOUBLE_LABELS[i]:sub(1, 1)] = ""
-		end
-	end
+  for i, file in ipairs(folder.window) do
+    state.file_pos[tostring(file.url)] = i
+    if state.current_num > #SINGLE_LABELS then
+      first_key_of_label[NORMAL_DOUBLE_LABELS[i]:sub(1, 1)] = ""
+    end
+  end
 
-	return state.current_num, folder.cursor, folder.offset, first_key_of_label
+  return state.current_num, folder.cursor, folder.offset, first_key_of_label
 end)
 
 local set_opts_default = ya.sync(function(state)
-	if state.opt_icon_fg == nil then
-		state.opt_icon_fg = "#fda1a1"
-	end
-	if state.opt_first_key_fg == nil then
-		state.opt_first_key_fg = "#df6249"
-	end
+  if state.opt_icon_fg == nil then
+    state.opt_icon_fg = "#fda1a1"
+  end
+  if state.opt_first_key_fg == nil then
+    state.opt_first_key_fg = "#df6249"
+  end
 end)
 
 local clear_state_str = ya.sync(function(state)
-	state.file_pos = nil
-	state.current_num = nil
-	state.double_first_key = nil
+  state.file_pos = nil
+  state.current_num = nil
+  state.double_first_key = nil
 end)
 
 return {
-	setup = function(state, opts)
-		-- Save the user configuration to the plugin's state
-		if opts ~= nil and opts.icon_fg ~= nil then
-			state.opt_icon_fg = opts.icon_fg
-		end
-		if opts ~= nil and opts.first_key_fg ~= nil then
-			state.opt_first_key_fg = opts.first_key_fg
-		end
-	end,
+  setup = function(state, opts)
+    -- Save the user configuration to the plugin's state
+    if opts ~= nil and opts.icon_fg ~= nil then
+      state.opt_icon_fg = opts.icon_fg
+    end
+    if opts ~= nil and opts.first_key_fg ~= nil then
+      state.opt_first_key_fg = opts.first_key_fg
+    end
+  end,
 
-	entry = function(_, _)
-		set_opts_default()
+  entry = function(_, _)
+    set_opts_default()
 
-		local current_num, cursor, offset, first_key_of_label = init()
+    local current_num, cursor, offset, first_key_of_label = init()
 
-		if current_num == nil or current_num == 0 then
-			return
-		end
+    if current_num == nil or current_num == 0 then
+      return
+    end
 
-		toggle_ui()
+    toggle_ui()
 
-		read_input_todo(current_num, cursor, offset, first_key_of_label)
+    read_input_todo(current_num, cursor, offset, first_key_of_label)
 
-		toggle_ui()
-		clear_state_str()
-	end,
+    toggle_ui()
+    clear_state_str()
+  end,
 }
