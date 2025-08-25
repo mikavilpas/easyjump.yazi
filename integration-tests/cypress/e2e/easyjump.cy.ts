@@ -30,6 +30,10 @@ describe("easyjump", () => {
       isFileSelected(
         term.dir.contents["dir-with-jumpable-files"].contents.file2.name,
       )
+
+      // in normal mode, easyjump mode should be deactivated after a single
+      // jump
+      cy.contains("[EJ]").should("not.exist")
     })
   })
 })
