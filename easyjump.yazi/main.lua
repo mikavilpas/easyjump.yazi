@@ -162,7 +162,8 @@ local function read_input_todo(current_num, cursor, offset, first_key_of_label)
       if pos == nil or pos > current_num then
         goto nextkey
       else
-        ya.emit("arrow", { pos - cursor - 1 + offset })
+        -- ya.mgr_emit is deprecated in https://github.com/sxyazi/yazi/pull/2653
+        (ya.mgr_emit or ya.emit)("arrow", { pos - cursor - 1 + offset })
         return
       end
     end
@@ -193,7 +194,8 @@ local function read_input_todo(current_num, cursor, offset, first_key_of_label)
       if pos == nil or pos > current_num then -- get the second double key fail, continue to get it
         goto nextkey
       else
-        ya.emit("arrow", { pos - cursor - 1 + offset })
+        -- ya.mgr_emit is deprecated in https://github.com/sxyazi/yazi/pull/2653
+        (ya.mgr_emit or ya.emit)("arrow", { pos - cursor - 1 + offset })
         return
       end
     end
