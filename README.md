@@ -13,7 +13,7 @@ example, set `i`:
 ```toml
 [[manager.prepend_keymap]]
 on   = [ "i" ]
-run = "plugin easyjump"
+run  = "plugin easyjump"
 desc = "easyjump"
 ```
 
