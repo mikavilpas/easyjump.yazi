@@ -22,3 +22,9 @@ before(function () {
   // https://gist.github.com/simenbrekken/3d2248f9e50c1143bf9dbe02e67f5399?permalink_comment_id=4615046#gistcomment-4615046
   cy.intercept({ resourceType: /xhr|fetch/ }, { log: false })
 })
+
+afterEach(function () {
+  if (this.currentTest?.state === "failed") {
+    cy.task("showYaziLog")
+  }
+})

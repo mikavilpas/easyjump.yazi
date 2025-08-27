@@ -24,16 +24,18 @@ export const startYaziApplication = ({
         cwdRelative: ".config/yazi",
       })
 
-      // debugging
-      // term.typeIntoTerminal("ls -al .config/yazi/plugins/easyjump.yazi/{enter}")
       term.runBlockingShellCommand({
         command: "test -f .config/yazi/plugins/easyjump.yazi/main.lua",
       })
 
       if (dir) {
-        term.typeIntoTerminal(`cd ${dir}{enter}`)
+        term.typeIntoTerminal(`cd ${dir}{enter}`, { delay: 0 })
       }
-      term.typeIntoTerminal("yazi{enter}")
+      term.typeIntoTerminal(
+        // "YAZI_LOG=debug /Users/mikavilpas/Downloads/yazi-aarch64-apple-darwin/yazi{enter}",
+        "YAZI_LOG=debug yazi{enter}",
+        { delay: 0 },
+      )
 
       return cy.wrap(term)
     })
