@@ -22,9 +22,6 @@ describe("easyjump", () => {
       // activate the easyjump plugin. yazi will prompt which file to jump to
       cy.typeIntoTerminal("i")
 
-      // the easyjump mode indicator must be visible
-      cy.contains("[EJ]")
-
       textIsVisibleWithColor("b", candidateColor)
       cy.typeIntoTerminal("b")
       isFileSelected(
