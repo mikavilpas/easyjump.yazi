@@ -82,6 +82,17 @@ local INPUT_CANDS = {
 	{ on = "y" }, { on = "z" }, { on = "<Esc>" }, { on = "<Backspace>" },
 }
 
+local render = ya.sync(function()
+  if type(ui.render) == "function" then
+    -- ya.render was deprecated in
+    -- https://github.com/sxyazi/yazi/commit/ffdd74b6abf552fd65738642aec50ca898fb26dd
+    -- (2025-07-03)
+    ui.render()
+  else
+    ya.render()
+  end
+end)
+
 local toggle_ui = ya.sync(function(st)
   if st.entity_label_id or st.status_ej_id then
     Entity:children_remove(st.entity_label_id)
@@ -90,7 +101,7 @@ local toggle_ui = ya.sync(function(st)
     st.status_ej_id = nil
     Entity._inc = Entity._inc - 1
     Status._inc = Status._inc - 1
-    ui.render()
+    render()
     return
   end
 
@@ -127,8 +138,7 @@ local toggle_ui = ya.sync(function(st)
     })
   end
   st.status_ej_id = Status:children_add(status_ej, 1001, Status.LEFT)
-
-  ui.render()
+  render()
 end)
 
 local update_double_first_key = ya.sync(function(state, str)
