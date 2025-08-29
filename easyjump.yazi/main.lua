@@ -232,15 +232,6 @@ local init = ya.sync(function(state)
   return state.current_num, folder.cursor, folder.offset, first_key_of_label
 end)
 
-local set_opts_default = ya.sync(function(state)
-  if state.opt_icon_fg == nil then
-    state.opt_icon_fg = "#fda1a1"
-  end
-  if state.opt_first_key_fg == nil then
-    state.opt_first_key_fg = "#df6249"
-  end
-end)
-
 local clear_state_str = ya.sync(function(state)
   state.file_pos = nil
   state.current_num = nil
@@ -249,18 +240,12 @@ end)
 
 return {
   setup = function(state, opts)
-    -- Save the user configuration to the plugin's state
-    if opts ~= nil and opts.icon_fg ~= nil then
-      state.opt_icon_fg = opts.icon_fg
-    end
-    if opts ~= nil and opts.first_key_fg ~= nil then
-      state.opt_first_key_fg = opts.first_key_fg
-    end
+    opts = opts or {}
+    state.opt_icon_fg = opts.icon_fg or "#fda1a1"
+    state.opt_first_key_fg = opts.first_key_fg or "#df6249"
   end,
 
   entry = function(_, _)
-    set_opts_default()
-
     local current_num, cursor, offset, first_key_of_label = init()
 
     if current_num == nil or current_num == 0 then
