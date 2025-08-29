@@ -33,4 +33,28 @@ describe("easyjump", () => {
       cy.contains("[EJ]").should("not.exist")
     })
   })
+
+  it("can customize the colors", () => {
+    cy.visit("/")
+    startYaziApplication({
+      dir: "dir-with-jumpable-files",
+      configModifications: ["customize_colors.lua"],
+    }).then((term) => {
+      // wait for the yazi ui to be visible. It will select the first file
+      // automatically
+      cy.contains("NOR")
+      isFileSelected(
+        term.dir.contents["dir-with-jumpable-files"].contents.file1.name,
+      )
+
+      // activate the easyjump plugin. yazi will prompt which file to jump to
+      cy.typeIntoTerminal("i")
+
+      // verify that the color has been customized
+      const customizedColors = {
+        fg: "rgb(148, 226, 213)",
+      }
+      textIsVisibleWithColor("b", customizedColors.fg)
+    })
+  })
 })
