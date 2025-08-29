@@ -1,11 +1,17 @@
+import type { MyNeovimConfigModification } from "@tui-sandbox/library/src/client/MyNeovimConfigModification"
 import type { TerminalTestApplicationContext } from "cypress/support/tui-sandbox"
 import type { MyTestDirectoryFile } from "MyTestDirectory"
+import path from "path"
+
+type StartYaziApplicationArgs = {
+  dir?: MyTestDirectoryFile
+  configModifications?: MyNeovimConfigModification<MyTestDirectoryFile>[]
+}
 
 export const startYaziApplication = ({
   dir,
-}: {
-  dir?: MyTestDirectoryFile
-} = {}): Cypress.Chainable<TerminalTestApplicationContext> => {
+  configModifications = [],
+}: StartYaziApplicationArgs = {}): Cypress.Chainable<TerminalTestApplicationContext> => {
   // start yazi in a terminal, optionally in a specific directory and with the
   // easyjump plugin linked
   return cy
@@ -28,14 +34,24 @@ export const startYaziApplication = ({
         command: "test -f .config/yazi/plugins/easyjump.yazi/main.lua",
       })
 
+      // append all the configModifications into the yazi config init.lua file
+      for (const modification of configModifications) {
+        const file = path.resolve(
+          term.dir.rootPathAbsolute,
+          "config-modifications",
+          modification,
+        )
+        term.runBlockingShellCommand({
+          command: `cat ${file} >> .config/yazi/init.lua`,
+        })
+      }
+
       if (dir) {
         term.typeIntoTerminal(`cd ${dir}{enter}`, { delay: 0 })
       }
-      term.typeIntoTerminal(
-        // "YAZI_LOG=debug /Users/mikavilpas/Downloads/yazi-aarch64-apple-darwin/yazi{enter}",
-        "YAZI_LOG=debug yazi{enter}",
-        { delay: 0 },
-      )
+
+      // https://yazi-rs.github.io/docs/plugins/overview/#logging
+      term.typeIntoTerminal("YAZI_LOG=debug yazi{enter}", { delay: 0 })
 
       return cy.wrap(term)
     })

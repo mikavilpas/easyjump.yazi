@@ -26,11 +26,25 @@ export const MyTestDirectorySchema = z.object({
           name: z.literal("yazi/"),
           type: z.literal("directory"),
           contents: z.object({
+            "init.lua": z.object({
+              name: z.literal("init.lua"),
+              type: z.literal("file"),
+            }),
             "keymap.toml": z.object({
               name: z.literal("keymap.toml"),
               type: z.literal("file"),
             }),
           }),
+        }),
+      }),
+    }),
+    "config-modifications": z.object({
+      name: z.literal("config-modifications/"),
+      type: z.literal("directory"),
+      contents: z.object({
+        "customize_colors.lua": z.object({
+          name: z.literal("customize_colors.lua"),
+          type: z.literal("file"),
         }),
       }),
     }),
@@ -55,9 +69,12 @@ export type MyTestDirectory = MyTestDirectoryContentsSchemaType["contents"]
 
 export const testDirectoryFiles = z.enum([
   ".bashrc",
+  ".config/yazi/init.lua",
   ".config/yazi/keymap.toml",
   ".config/yazi",
   ".config",
+  "config-modifications/customize_colors.lua",
+  "config-modifications",
   "dir-with-jumpable-files/file1",
   "dir-with-jumpable-files/file2",
   "dir-with-jumpable-files",
