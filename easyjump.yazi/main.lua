@@ -143,10 +143,6 @@ local toggle_ui = ya.sync(function(st)
   render()
 end)
 
-local update_double_first_key = ya.sync(function(state, str)
-  state.double_first_key = str
-end)
-
 local function read_input_todo(current_num, cursor, offset, first_key_of_label)
   local cand = nil
   local key
@@ -183,7 +179,7 @@ local function read_input_todo(current_num, cursor, offset, first_key_of_label)
     -- hit backout a double key
     if INPUT_KEY[cand] == "<Backspace>" and current_num > #SINGLE_LABELS then
       key_num_count = 0 -- backout to get the first double key
-      update_double_first_key(nil) -- apply to the render change for first key
+      state.double_first_key = nil -- apply to the render change for first key
       goto nextkey
     end
 
@@ -192,7 +188,7 @@ local function read_input_todo(current_num, cursor, offset, first_key_of_label)
       key = INPUT_KEY[cand]
       if first_key_of_label[key] then
         key_num_count = key_num_count + 1
-        update_double_first_key(key) -- apply to the render change for first key
+        state.double_first_key = key -- apply to the render change for first key
       else
         key_num_count = 0 -- get the first double key fail, continue to get it
       end
