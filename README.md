@@ -5,6 +5,10 @@ A yazi plugin for quickly jumping to the visible files.
 A bit like [hop.nvim](https://github.com/smoka7/hop.nvim) in Neovim but for
 yazi.
 
+Tested on yazi stable
+([25.5.28](https://github.com/sxyazi/yazi/releases/tag/v25.5.28)) and yazi
+nightly.
+
 ## Usage
 
 Install the plugin. Choose your installation method:
