@@ -1,12 +1,24 @@
 import { flavors } from "@catppuccin/palette"
 import { rgbify } from "@tui-sandbox/library/dist/src/client/color-utilities.js"
-import { textIsVisibleWithColor } from "@tui-sandbox/library/dist/src/client/cypress-assertions"
+import {
+  textIsVisibleWithBackgroundColor,
+  textIsVisibleWithColor,
+} from "@tui-sandbox/library/dist/src/client/cypress-assertions"
 import { startYaziApplication } from "./utils/startYaziApplication.js"
 
 const candidateColor = "rgb(253, 161, 161)"
+const firstCharReceivedColor = "rgb(223, 98, 73)"
 
 const isFileSelected = (fileName: string) =>
-  textIsVisibleWithColor(fileName, rgbify(flavors.macchiato.colors.text.rgb))
+  textIsVisibleWithColor(
+    fileName,
+    rgbify(flavors.macchiato.colors.text.rgb),
+  ).then(() => {
+    textIsVisibleWithBackgroundColor(
+      fileName,
+      rgbify(flavors.macchiato.colors.text.rgb),
+    )
+  })
 
 describe("easyjump", () => {
   it("can jump to a file", () => {
@@ -55,6 +67,25 @@ describe("easyjump", () => {
         fg: "rgb(148, 226, 213)",
       }
       textIsVisibleWithColor("b", customizedColors.fg)
+    })
+  })
+
+  it("can jump to a file with two characters", () => {
+    cy.visit("/")
+    startYaziApplication({
+      dir: "lots-of-files",
+    }).then((term) => {
+      cy.contains("NOR")
+      isFileSelected(term.dir.contents["lots-of-files"].contents.file.name)
+      cy.typeIntoTerminal("i")
+
+      textIsVisibleWithColor("ao", candidateColor)
+      cy.typeIntoTerminal("a")
+
+      // the first character is highlighted to mark that it has been received
+      textIsVisibleWithColor("a", firstCharReceivedColor)
+      cy.typeIntoTerminal("o")
+      isFileSelected(term.dir.contents["lots-of-files"].contents.file_1.name)
     })
   })
 })

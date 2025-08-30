@@ -47,6 +47,7 @@ export const startYaziApplication = ({
       }
 
       if (dir) {
+        term.runBlockingShellCommand({ command: `test -d ${dir}` })
         term.typeIntoTerminal(`cd ${dir}{enter}`, { delay: 0 })
       }
 
