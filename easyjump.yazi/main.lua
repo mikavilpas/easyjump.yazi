@@ -1,3 +1,5 @@
+--- @since 25.5.28
+
 -- stylua: ignore
 local SINGLE_LABELS = {
 	"p", "b", "e", "t", "a", "o", "i", "n", "s", "r", "h", "l", "d", "c",
