@@ -56,6 +56,117 @@ export const MyTestDirectorySchema = z.object({
         file2: z.object({ name: z.literal("file2"), type: z.literal("file") }),
       }),
     }),
+    "lots-of-files": z.object({
+      name: z.literal("lots-of-files/"),
+      type: z.literal("directory"),
+      contents: z.object({
+        file: z.object({ name: z.literal("file"), type: z.literal("file") }),
+        file_1: z.object({
+          name: z.literal("file_1"),
+          type: z.literal("file"),
+        }),
+        file_10: z.object({
+          name: z.literal("file_10"),
+          type: z.literal("file"),
+        }),
+        file_11: z.object({
+          name: z.literal("file_11"),
+          type: z.literal("file"),
+        }),
+        file_12: z.object({
+          name: z.literal("file_12"),
+          type: z.literal("file"),
+        }),
+        file_13: z.object({
+          name: z.literal("file_13"),
+          type: z.literal("file"),
+        }),
+        file_14: z.object({
+          name: z.literal("file_14"),
+          type: z.literal("file"),
+        }),
+        file_15: z.object({
+          name: z.literal("file_15"),
+          type: z.literal("file"),
+        }),
+        file_16: z.object({
+          name: z.literal("file_16"),
+          type: z.literal("file"),
+        }),
+        file_17: z.object({
+          name: z.literal("file_17"),
+          type: z.literal("file"),
+        }),
+        file_18: z.object({
+          name: z.literal("file_18"),
+          type: z.literal("file"),
+        }),
+        file_19: z.object({
+          name: z.literal("file_19"),
+          type: z.literal("file"),
+        }),
+        file_2: z.object({
+          name: z.literal("file_2"),
+          type: z.literal("file"),
+        }),
+        file_20: z.object({
+          name: z.literal("file_20"),
+          type: z.literal("file"),
+        }),
+        file_21: z.object({
+          name: z.literal("file_21"),
+          type: z.literal("file"),
+        }),
+        file_22: z.object({
+          name: z.literal("file_22"),
+          type: z.literal("file"),
+        }),
+        file_23: z.object({
+          name: z.literal("file_23"),
+          type: z.literal("file"),
+        }),
+        file_24: z.object({
+          name: z.literal("file_24"),
+          type: z.literal("file"),
+        }),
+        file_25: z.object({
+          name: z.literal("file_25"),
+          type: z.literal("file"),
+        }),
+        file_26: z.object({
+          name: z.literal("file_26"),
+          type: z.literal("file"),
+        }),
+        file_3: z.object({
+          name: z.literal("file_3"),
+          type: z.literal("file"),
+        }),
+        file_4: z.object({
+          name: z.literal("file_4"),
+          type: z.literal("file"),
+        }),
+        file_5: z.object({
+          name: z.literal("file_5"),
+          type: z.literal("file"),
+        }),
+        file_6: z.object({
+          name: z.literal("file_6"),
+          type: z.literal("file"),
+        }),
+        file_7: z.object({
+          name: z.literal("file_7"),
+          type: z.literal("file"),
+        }),
+        file_8: z.object({
+          name: z.literal("file_8"),
+          type: z.literal("file"),
+        }),
+        file_9: z.object({
+          name: z.literal("file_9"),
+          type: z.literal("file"),
+        }),
+      }),
+    }),
   }),
 })
 
@@ -78,6 +189,34 @@ export const testDirectoryFiles = z.enum([
   "dir-with-jumpable-files/file1",
   "dir-with-jumpable-files/file2",
   "dir-with-jumpable-files",
+  "lots-of-files/file",
+  "lots-of-files/file_1",
+  "lots-of-files/file_10",
+  "lots-of-files/file_11",
+  "lots-of-files/file_12",
+  "lots-of-files/file_13",
+  "lots-of-files/file_14",
+  "lots-of-files/file_15",
+  "lots-of-files/file_16",
+  "lots-of-files/file_17",
+  "lots-of-files/file_18",
+  "lots-of-files/file_19",
+  "lots-of-files/file_2",
+  "lots-of-files/file_20",
+  "lots-of-files/file_21",
+  "lots-of-files/file_22",
+  "lots-of-files/file_23",
+  "lots-of-files/file_24",
+  "lots-of-files/file_25",
+  "lots-of-files/file_26",
+  "lots-of-files/file_3",
+  "lots-of-files/file_4",
+  "lots-of-files/file_5",
+  "lots-of-files/file_6",
+  "lots-of-files/file_7",
+  "lots-of-files/file_8",
+  "lots-of-files/file_9",
+  "lots-of-files",
   ".",
 ])
 export type MyTestDirectoryFile = z.infer<typeof testDirectoryFiles>
