@@ -3,4 +3,5 @@ packages:
 
 onlyBuiltDependencies:
   - cypress
+  - esbuild
   - node-pty
