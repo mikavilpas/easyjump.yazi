@@ -220,3 +220,4 @@ export const testDirectoryFiles = z.enum([
   ".",
 ])
 export type MyTestDirectoryFile = z.infer<typeof testDirectoryFiles>
+export type MyNeovimAppName = "nvim"
