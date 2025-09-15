@@ -9,7 +9,7 @@ importers:
   .:
     devDependencies:
       prettier:
-        specifier: ^3.6.2
+        specifier: 3.6.2
         version: 3.6.2
       prettier-plugin-organize-imports:
         specifier: 4.2.0
