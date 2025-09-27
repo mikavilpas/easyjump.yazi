@@ -10,7 +10,6 @@ jobs:
   build:
     strategy:
       matrix:
-        neovim_version: ["nightly", "stable"]
         yazi-version:
           - name: nightly
             method: cargo-install
