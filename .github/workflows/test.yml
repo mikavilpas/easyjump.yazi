@@ -43,6 +43,9 @@ jobs:
           fd --version
           fzf --version
 
+      - name: Install the mold linker
+        uses: rui314/setup-mold@v1
+
       - name: Compile and install `yazi-fm` from source
         if: matrix.yazi-version.method == 'cargo-install'
         uses: baptiste0928/cargo-install@b687c656bda5733207e629b50a22bf68974a0305 # v3.3.2
