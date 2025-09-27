@@ -26,23 +26,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-      - name: Set up yazi dependencies
-        run: |
-          sudo apt-get update
-          # ripgrep is a dependency of yazi
-          #
-          # fd is a dependency of yazi
-          # https://github.com/sharkdp/fd?tab=readme-ov-file#on-ubuntu
-          # make sure it's available as `fd` - there seems to be some conflict in Ubuntu
-          #
-          # install fzf
-          sudo apt-get install ripgrep fd-find fzf
-          sudo ln -s "$(which fdfind)" /usr/local/bin/fd
-
-          rg --version
-          fd --version
-          fzf --version
-
+      - uses: jdx/mise-action@5ac50f778e26fac95da98d50503682459e86d566 # v3.2.0
       - name: Install the mold linker
         uses: rui314/setup-mold@725a8794d15fc7563f59595bd9556495c0564878 # v1
 
