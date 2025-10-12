@@ -2,7 +2,7 @@
 [tools]
 # yazi dependencies
 "ubi:sharkdp/fd" = "10.3.0"
-"ubi:junegunn/fzf" = "0.65.2"
+"ubi:junegunn/fzf" = "0.66.0"
 "ubi:BurntSushi/ripgrep" = { version = "14.1.1", exe = "rg" }
 
 # development tools
