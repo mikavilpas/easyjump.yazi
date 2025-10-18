@@ -30,6 +30,8 @@ jobs:
         shell: bash
         run: |
           mkdir -p "$HOME/.local/bin"
+          # make the tools available for subsequent steps
+          echo "$(pwd)/bin" >> "$GITHUB_PATH"
           curl --silent --location \
               https://raw.githubusercontent.com/houseabsolute/ubi/master/bootstrap/bootstrap-ubi.sh |
               TARGET="$HOME/.local/bin" sh
