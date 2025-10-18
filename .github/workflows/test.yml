@@ -25,7 +25,28 @@ jobs:
 
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-      - uses: jdx/mise-action@e3d7b8d67a7958d1207f6ed871e83b1ea780e7b0 # v3.3.1
+
+      - name: Install tools with UBI
+        shell: bash
+        run: |
+          mkdir -p "$HOME/.local/bin"
+          curl --silent --location \
+              https://raw.githubusercontent.com/houseabsolute/ubi/master/bootstrap/bootstrap-ubi.sh |
+              TARGET="$HOME/.local/bin" sh
+
+          ubi --project mikefarah/yq
+
+          VERSION=$(yq '.tools."ubi:BurntSushi/ripgrep".version' .mise.toml)
+          ubi --project BurntSushi/ripgrep --tag "$VERSION" --exe rg
+
+          VERSION=$(yq '.tools."ubi:junegunn/fzf"' .mise.toml)
+          ubi --project junegunn/fzf --tag "v$VERSION"
+
+          VERSION=$(yq '.tools."ubi:sharkdp/fd"' .mise.toml)
+          ubi --project sharkdp/fd --tag "v$VERSION"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Install the mold linker
         uses: rui314/setup-mold@725a8794d15fc7563f59595bd9556495c0564878 # v1
 
