@@ -10,7 +10,7 @@
     {
       "customType": "regex",
       "datasourceTemplate": "github-releases",
-      "managerFilePatterns": [".github/workflows/test.yml"],
+      "managerFilePatterns": [".github/workflows/*.yml"],
       "matchStrings": [
         "#\\s*renovate:\\s*datasource=github-releases\\s+depName=(?<depName>\\S+)\\s*[\\r\\n]+[^:]+:\\s*(?<currentValue>\\S+)"
       ]
@@ -19,7 +19,7 @@
       "customType": "regex",
       "datasourceTemplate": "git-refs",
       "currentValueTemplate": "main",
-      "managerFilePatterns": [".github/workflows/test.yml"],
+      "managerFilePatterns": [".github/workflows/*.yml"],
       "matchStrings": [
         "#\\s*renovate:\\s*datasource=git-refs\\s+packageName=(?<packageName>\\S+)\\s*[\\r\\n]+[^:]+:\\s*(?<currentDigest>\\S+)"
       ]
