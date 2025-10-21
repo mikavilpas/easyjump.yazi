@@ -17,7 +17,7 @@
   "devDependencies": {
     "@eslint/js": "9.38.0",
     "@tui-sandbox/library": "11.9.1",
-    "@types/node": "24.9.0",
+    "@types/node": "24.9.1",
     "@types/tinycolor2": "1.4.6",
     "eslint": "9.38.0",
     "eslint-config-prettier": "10.1.8",
