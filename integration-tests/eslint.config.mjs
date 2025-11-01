@@ -1,3 +1,4 @@
+// @ts-check
 import eslintConfigPrettier from "eslint-config-prettier"
 import noOnlyTests from "eslint-plugin-no-only-tests"
 
