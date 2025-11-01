@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "pnpm --filter ./integration-tests/ dev",
     "postinstall": "git submodule update --init --recursive",
+    "lint": "pnpm --filter ./integration-tests/ lint",
     "tui": "pnpm --filter ./integration-tests/ exec tui"
   },
   "devDependencies": {

@@ -1,6 +1,7 @@
 // @ts-check
 import eslintConfigPrettier from "eslint-config-prettier"
 import noOnlyTests from "eslint-plugin-no-only-tests"
+import oxlint from "eslint-plugin-oxlint"
 
 import eslint from "@eslint/js"
 import { defineConfig } from "eslint/config"
@@ -23,6 +24,7 @@ export default defineConfig(
   tseslint.configs.strictTypeChecked,
 
   {
+    linterOptions: { reportUnusedDisableDirectives: "warn" },
     plugins: {
       "no-only-tests": noOnlyTests,
     },
@@ -91,6 +93,7 @@ export default defineConfig(
     },
   },
 
+  ...oxlint.configs["flat/recommended"], // oxlint should be the last one
   // should be the last item
   eslintConfigPrettier,
 )

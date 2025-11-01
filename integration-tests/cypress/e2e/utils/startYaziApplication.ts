@@ -1,7 +1,7 @@
 import type { MyNeovimConfigModification } from "@tui-sandbox/library/src/client/MyNeovimConfigModification"
-import type { TerminalTestApplicationContext } from "cypress/support/tui-sandbox"
-import type { MyTestDirectoryFile } from "MyTestDirectory"
 import path from "path"
+import type { MyTestDirectoryFile } from "../../../MyTestDirectory"
+import type { TerminalTestApplicationContext } from "../../support/tui-sandbox"
 
 type StartYaziApplicationArgs = {
   dir?: MyTestDirectoryFile
