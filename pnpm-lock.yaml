@@ -58,10 +58,10 @@ importers:
         specifier: 3.3.0
         version: 3.3.0
       eslint-plugin-oxlint:
-        specifier: ^1.25.0
+        specifier: 1.25.0
         version: 1.25.0
       oxlint-tsgolint:
-        specifier: ^0.4.0
+        specifier: 0.4.0
         version: 0.4.0
       tinycolor2:
         specifier: 1.6.0
