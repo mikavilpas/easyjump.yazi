@@ -15,18 +15,18 @@
     "zod": "4.1.12"
   },
   "devDependencies": {
-    "@eslint/js": "9.38.0",
+    "@eslint/js": "9.39.1",
     "@tui-sandbox/library": "11.11.0",
     "@types/node": "24.10.0",
     "@types/tinycolor2": "1.4.6",
-    "eslint": "9.38.0",
+    "eslint": "9.39.1",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-no-only-tests": "3.3.0",
     "eslint-plugin-oxlint": "1.25.0",
     "oxlint-tsgolint": "0.4.0",
     "tinycolor2": "1.6.0",
-    "type-fest": "5.1.0",
+    "type-fest": "5.2.0",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.46.2"
+    "typescript-eslint": "8.46.3"
   }
 }
