@@ -6,5 +6,5 @@
 "ubi:BurntSushi/ripgrep" = { version = "15.1.0", exe = "rg" }
 
 # development tools
-"ubi:JohnnyMorganz/stylua" = "2.3.0"
+"ubi:JohnnyMorganz/stylua" = "2.3.1"
 actionlint = "1.7.8"
