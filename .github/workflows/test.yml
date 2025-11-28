@@ -14,7 +14,7 @@ jobs:
           - name: nightly
             method: cargo-install
             # renovate: datasource=git-refs packageName=https://github.com/sxyazi/yazi
-            commit: 3561867b99605ddba338343fbaa4e6d303e61d81
+            commit: 8c2a6dba9060d3b4152f8a7d88467329a531bd3f
           - name: stable
             method: download
             # renovate: datasource=github-releases depName=sxyazi/yazi
