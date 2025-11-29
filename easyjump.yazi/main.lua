@@ -47,14 +47,10 @@ for i, v in ipairs(NORMAL_DOUBLE_LABELS) do
   DOUBLE_POS[v] = i
 end
 
--- stylua: ignore
-local INPUT_CANDS = {
-  { on = "a" }, { on = "b" }, { on = "c" }, { on = "d" }, { on = "e" }, { on = "f" },
-  { on = "g" }, { on = "h" }, { on = "i" }, { on = "j" }, { on = "k" }, { on = "l" },
-  { on = "m" }, { on = "n" }, { on = "o" }, { on = "p" }, { on = "q" }, { on = "r" },
-  { on = "s" }, { on = "t" }, { on = "u" }, { on = "v" }, { on = "w" }, { on = "x" },
-  { on = "y" }, { on = "z" }, { on = "<Esc>" }, { on = "<Backspace>" },
-}
+local INPUT_CANDS = {}
+for _, v in ipairs(INPUT_KEY) do
+  table.insert(INPUT_CANDS, { on = v })
+end
 
 local render = ya.sync(function()
   if type(ui.render) == "function" then
