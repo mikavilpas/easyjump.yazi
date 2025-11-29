@@ -70,6 +70,7 @@ local status_ej = function(self)
   })
 end
 
+---@param st easyjump.state
 local toggle_ui = ya.sync(function(st)
   if st.entity_label_id or st.status_ej_id then
     Entity:children_remove(st.entity_label_id)
@@ -112,6 +113,8 @@ local toggle_ui = ya.sync(function(st)
   render()
 end)
 
+---@param state easyjump.state
+---@param str string
 local update_double_first_key = ya.sync(function(state, str)
   state.double_first_key = str
 end)
@@ -185,7 +188,17 @@ local function read_input_todo(current_num, cursor, offset, first_key_of_label)
   end
 end
 
+---@class(exact) easyjump.state
+---@field opt_icon_fg string
+---@field opt_first_key_fg string
+---@field entity_label_id number
+---@field status_ej_id number
+---@field file_pos table<string, number>
+---@field current_num number
+---@field double_first_key string
+
 -- init to record file position and the file num
+---@param state easyjump.state
 local init = ya.sync(function(state)
   state.file_pos = {}
   local first_key_of_label = {}
@@ -203,6 +216,7 @@ local init = ya.sync(function(state)
   return state.current_num, folder.cursor, folder.offset, first_key_of_label
 end)
 
+---@param state easyjump.state
 local clear_state_str = ya.sync(function(state)
   state.file_pos = nil
   state.current_num = nil
@@ -210,6 +224,7 @@ local clear_state_str = ya.sync(function(state)
 end)
 
 return {
+  ---@param state easyjump.state
   setup = function(state, opts)
     opts = opts or {}
     state.opt_icon_fg = opts.icon_fg or "#fda1a1"
