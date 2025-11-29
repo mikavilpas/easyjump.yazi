@@ -67,6 +67,13 @@ local render = ya.sync(function()
   end
 end)
 
+local status_ej = function(self)
+  local style = self:style()
+  return ui.Line({
+    ui.Span("[EJ] "):style(style.main),
+  })
+end
+
 local toggle_ui = ya.sync(function(st)
   if st.entity_label_id or st.status_ej_id then
     Entity:children_remove(st.entity_label_id)
@@ -105,12 +112,6 @@ local toggle_ui = ya.sync(function(st)
   end
   st.entity_label_id = Entity:children_add(entity_label, 2001)
 
-  local status_ej = function(self)
-    local style = self:style()
-    return ui.Line({
-      ui.Span("[EJ] "):style(style.main),
-    })
-  end
   st.status_ej_id = Status:children_add(status_ej, 1001, Status.LEFT)
   render()
 end)
