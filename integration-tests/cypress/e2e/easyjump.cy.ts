@@ -88,4 +88,28 @@ describe("easyjump", () => {
       isFileSelected(term.dir.contents["lots-of-files"].contents.file_1.name)
     })
   })
+
+  it("can cancel the jump", () => {
+    cy.visit("/")
+    startYaziApplication({
+      dir: "lots-of-files",
+    }).then((term) => {
+      cy.contains("NOR")
+      isFileSelected(term.dir.contents["lots-of-files"].contents.file.name)
+      cy.typeIntoTerminal("i")
+
+      textIsVisibleWithColor("ao", candidateColor)
+      cy.typeIntoTerminal("a")
+
+      // the first character is highlighted to mark that it has been received
+      textIsVisibleWithColor("a", firstCharReceivedColor)
+
+      // cancel the jump and verify the label disappears
+      cy.typeIntoTerminal("{esc}")
+      cy.contains("ao").should("not.exist")
+
+      // the cursor should still be on the original file
+      isFileSelected(term.dir.contents["lots-of-files"].contents.file.name)
+    })
+  })
 })
