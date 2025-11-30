@@ -112,4 +112,27 @@ describe("easyjump", () => {
       isFileSelected(term.dir.contents["lots-of-files"].contents.file.name)
     })
   })
+
+  it("can use backspace to undo the first of two keys", () => {
+    cy.visit("/")
+    startYaziApplication({
+      dir: "lots-of-files",
+    }).then((term) => {
+      // if the user types an incorrect first character, they can use
+      // backspace to go back and try again without canceling the entire jump
+      cy.contains("NOR")
+      isFileSelected(term.dir.contents["lots-of-files"].contents.file.name)
+      cy.typeIntoTerminal("i")
+
+      textIsVisibleWithColor("ao", candidateColor)
+      cy.typeIntoTerminal("a")
+
+      // the first character is highlighted to mark that it has been received
+      textIsVisibleWithColor("a", firstCharReceivedColor)
+
+      // press backspace to undo the first character
+      cy.typeIntoTerminal("{backspace}")
+      textIsVisibleWithColor("ao", candidateColor)
+    })
+  })
 })
