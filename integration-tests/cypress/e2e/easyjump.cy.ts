@@ -135,4 +135,34 @@ describe("easyjump", () => {
       textIsVisibleWithColor("ao", candidateColor)
     })
   })
+
+  it("ignores keys that don't match the current hints", () => {
+    cy.visit("/")
+    startYaziApplication({
+      dir: "lots-of-files",
+    }).then((term) => {
+      // if the user types an incorrect first character, they can use
+      // backspace to go back and try again without canceling the entire jump
+      cy.contains("NOR")
+      isFileSelected(term.dir.contents["lots-of-files"].contents.file.name)
+      cy.typeIntoTerminal("i")
+
+      // wait until the hints are shown
+      textIsVisibleWithColor("ao", candidateColor)
+
+      // input a key that does not match any hints
+      cy.typeIntoTerminal("x")
+
+      // the key must have been ignored, so we can input the first valid key
+      cy.typeIntoTerminal("a")
+      textIsVisibleWithColor("a", firstCharReceivedColor)
+
+      // complete the jump
+      cy.typeIntoTerminal("o")
+      isFileSelected(term.dir.contents["lots-of-files"].contents.file_1.name)
+
+      // TODO invalid second key should be ignored as well, but this did not
+      // work when I tried it out
+    })
+  })
 })
