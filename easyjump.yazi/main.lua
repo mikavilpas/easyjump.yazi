@@ -88,7 +88,7 @@ local toggle_ui = ya.sync(function(st)
     local pos = st.file_pos[tostring(file.url)]
     if not pos then
       return ui.Line({})
-    elseif st.current_num > #SINGLE_LABELS then
+    elseif st.current_files_count > #SINGLE_LABELS then
       if
         st.double_first_key ~= nil
         and NORMAL_DOUBLE_LABELS[pos]:sub(1, 1) == st.double_first_key
@@ -193,8 +193,8 @@ end
 ---@field opt_first_key_fg string
 ---@field entity_label_id number
 ---@field status_ej_id number
----@field file_pos table<string, number>
----@field current_num number
+---@field file_pos table<string, number> # file url to index
+---@field current_files_count number
 ---@field double_first_key string
 
 -- init to record file position and the file num
@@ -204,22 +204,25 @@ local init = ya.sync(function(state)
   local first_key_of_label = {}
   local folder = cx.active.current
 
-  state.current_num = #folder.window
+  state.current_files_count = #folder.window
 
   for i, file in ipairs(folder.window) do
     state.file_pos[tostring(file.url)] = i
-    if state.current_num > #SINGLE_LABELS then
+    if state.current_files_count > #SINGLE_LABELS then
       first_key_of_label[NORMAL_DOUBLE_LABELS[i]:sub(1, 1)] = ""
     end
   end
 
-  return state.current_num, folder.cursor, folder.offset, first_key_of_label
+  return state.current_files_count,
+    folder.cursor,
+    folder.offset,
+    first_key_of_label
 end)
 
 ---@param state easyjump.state
-local clear_state_str = ya.sync(function(state)
+local clear_state = ya.sync(function(state)
   state.file_pos = nil
-  state.current_num = nil
+  state.current_files_count = nil
   state.double_first_key = nil
 end)
 
@@ -243,6 +246,6 @@ return {
     read_input_todo(current_num, cursor, offset, first_key_of_label)
 
     toggle_ui()
-    clear_state_str()
+    clear_state()
   end,
 }
