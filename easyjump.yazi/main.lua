@@ -119,7 +119,12 @@ local update_double_first_key = ya.sync(function(state, str)
   state.double_first_key = str
 end)
 
-local function read_input_todo(current_num, cursor, offset, first_key_of_label)
+local function read_input_todo(
+  current_files_count,
+  cursor,
+  offset,
+  first_key_of_label
+)
   local cand = nil
   local key
   local key_num_count = 0
@@ -140,10 +145,10 @@ local function read_input_todo(current_num, cursor, offset, first_key_of_label)
     end
 
     -- hit single key
-    if current_num <= #SINGLE_LABELS then
+    if current_files_count <= #SINGLE_LABELS then
       key = INPUT_KEY[cand]
       pos = SINGLE_POS[key]
-      if pos == nil or pos > current_num then
+      if pos == nil or pos > current_files_count then
         goto nextkey
       else
         -- ya.mgr_emit is deprecated in https://github.com/sxyazi/yazi/pull/2653
@@ -153,14 +158,17 @@ local function read_input_todo(current_num, cursor, offset, first_key_of_label)
     end
 
     -- hit backout a double key
-    if INPUT_KEY[cand] == "<Backspace>" and current_num > #SINGLE_LABELS then
+    if
+      INPUT_KEY[cand] == "<Backspace>"
+      and current_files_count > #SINGLE_LABELS
+    then
       key_num_count = 0 -- backout to get the first double key
       update_double_first_key(nil) -- apply to the render change for first key
       goto nextkey
     end
 
     -- hit the first double key
-    if key_num_count == 0 and current_num > #SINGLE_LABELS then
+    if key_num_count == 0 and current_files_count > #SINGLE_LABELS then
       key = INPUT_KEY[cand]
       if first_key_of_label[key] then
         key_num_count = key_num_count + 1
@@ -172,10 +180,10 @@ local function read_input_todo(current_num, cursor, offset, first_key_of_label)
     end
 
     -- hit the second double key
-    if key_num_count == 1 and current_num > #SINGLE_LABELS then
+    if key_num_count == 1 and current_files_count > #SINGLE_LABELS then
       double_key = key .. INPUT_KEY[cand]
       pos = DOUBLE_POS[double_key]
-      if pos == nil or pos > current_num then -- get the second double key fail, continue to get it
+      if pos == nil or pos > current_files_count then -- get the second double key fail, continue to get it
         goto nextkey
       else
         -- ya.mgr_emit is deprecated in https://github.com/sxyazi/yazi/pull/2653
@@ -235,15 +243,15 @@ return {
   end,
 
   entry = function(_, _)
-    local current_num, cursor, offset, first_key_of_label = init()
+    local current_files_count, cursor, offset, first_key_of_label = init()
 
-    if current_num == nil or current_num == 0 then
+    if current_files_count == nil or current_files_count == 0 then
       return
     end
 
     toggle_ui()
 
-    read_input_todo(current_num, cursor, offset, first_key_of_label)
+    read_input_todo(current_files_count, cursor, offset, first_key_of_label)
 
     toggle_ui()
     clear_state()
