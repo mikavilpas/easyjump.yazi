@@ -212,9 +212,10 @@ local init = ya.sync(function(state)
   local first_key_of_label = {}
   local folder = cx.active.current
 
-  state.current_files_count = #folder.window
+  local visible_files = folder.window
+  state.current_files_count = #visible_files
 
-  for i, file in ipairs(folder.window) do
+  for i, file in ipairs(visible_files) do
     state.file_pos[tostring(file.url)] = i
     if state.current_files_count > #SINGLE_LABELS then
       first_key_of_label[NORMAL_DOUBLE_LABELS[i]:sub(1, 1)] = ""
