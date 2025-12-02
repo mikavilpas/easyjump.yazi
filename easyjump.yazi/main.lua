@@ -85,7 +85,7 @@ local toggle_ui = ya.sync(function(st)
 
   local entity_label = function(self)
     local file = self._file
-    local pos = st.file_pos[tostring(file.url)]
+    local pos = st.files_indices[tostring(file.url)]
     if not pos then
       return ui.Line({})
     elseif st.current_files_count > #SINGLE_LABELS then
@@ -201,14 +201,14 @@ end
 ---@field opt_first_key_fg string
 ---@field entity_label_id number
 ---@field status_ej_id number
----@field file_pos table<string, number> # file url to index
+---@field files_indices table<string, number> # file url to index
 ---@field current_files_count number
 ---@field double_first_key string
 
 -- init to record file position and the file num
 ---@param state easyjump.state
 local init = ya.sync(function(state)
-  state.file_pos = {}
+  state.files_indices = {}
   local first_key_of_label = {}
   local folder = cx.active.current
 
@@ -216,7 +216,7 @@ local init = ya.sync(function(state)
   state.current_files_count = #visible_files
 
   for i, file in ipairs(visible_files) do
-    state.file_pos[tostring(file.url)] = i
+    state.files_indices[tostring(file.url)] = i
     if state.current_files_count > #SINGLE_LABELS then
       first_key_of_label[NORMAL_DOUBLE_LABELS[i]:sub(1, 1)] = ""
     end
@@ -230,7 +230,7 @@ end)
 
 ---@param state easyjump.state
 local clear_state = ya.sync(function(state)
-  state.file_pos = nil
+  state.files_indices = nil
   state.current_files_count = nil
   state.double_first_key = nil
 end)
