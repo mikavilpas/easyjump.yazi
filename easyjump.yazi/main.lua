@@ -37,14 +37,18 @@ local INPUT_KEY = {
   "u", "v", "w", "x", "y", "z", "<Esc>", "<Backspace>",
 }
 
-local SINGLE_POS = {}
+-- labels for single keys, corresponding to the file index the label points to
+---@type table<string, number>
+local SINGLE_KEY_FILES = {}
 for i, v in ipairs(SINGLE_LABELS) do
-  SINGLE_POS[v] = i
+  SINGLE_KEY_FILES[v] = i
 end
 
-local DOUBLE_POS = {}
+-- labels for double keys, corresponding to the file index the label points to
+---@type table<string, number>
+local DOUBLE_KEY_FILES = {}
 for i, v in ipairs(NORMAL_DOUBLE_LABELS) do
-  DOUBLE_POS[v] = i
+  DOUBLE_KEY_FILES[v] = i
 end
 
 local INPUT_CANDS = {}
@@ -125,11 +129,12 @@ local function read_input_todo(
   offset,
   first_key_of_label
 )
+  ---@type number?
   local cand = nil
+  ---@type string?
   local key
+  ---@type number
   local key_num_count = 0
-  local pos
-  local double_key
 
   while true do
     cand = ya.which({ cands = INPUT_CANDS, silent = true })
@@ -147,12 +152,12 @@ local function read_input_todo(
     -- hit single key
     if current_files_count <= #SINGLE_LABELS then
       key = INPUT_KEY[cand]
-      pos = SINGLE_POS[key]
-      if pos == nil or pos > current_files_count then
+      local file_index = SINGLE_KEY_FILES[key]
+      if file_index == nil or file_index > current_files_count then
         goto nextkey
       else
         -- ya.mgr_emit is deprecated in https://github.com/sxyazi/yazi/pull/2653
-        (ya.mgr_emit or ya.emit)("arrow", { pos - cursor - 1 + offset })
+        (ya.mgr_emit or ya.emit)("arrow", { file_index - cursor - 1 + offset })
         return
       end
     end
@@ -181,13 +186,13 @@ local function read_input_todo(
 
     -- hit the second double key
     if key_num_count == 1 and current_files_count > #SINGLE_LABELS then
-      double_key = key .. INPUT_KEY[cand]
-      pos = DOUBLE_POS[double_key]
-      if pos == nil or pos > current_files_count then -- get the second double key fail, continue to get it
+      local double_key = key .. INPUT_KEY[cand]
+      local file_index = DOUBLE_KEY_FILES[double_key]
+      if file_index == nil or file_index > current_files_count then -- get the second double key fail, continue to get it
         goto nextkey
       else
         -- ya.mgr_emit is deprecated in https://github.com/sxyazi/yazi/pull/2653
-        (ya.mgr_emit or ya.emit)("arrow", { pos - cursor - 1 + offset })
+        (ya.mgr_emit or ya.emit)("arrow", { file_index - cursor - 1 + offset })
         return
       end
     end
