@@ -22,7 +22,7 @@
     "eslint": "9.39.1",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-no-only-tests": "3.3.0",
-    "eslint-plugin-oxlint": "1.31.0",
+    "eslint-plugin-oxlint": "1.32.0",
     "oxlint-tsgolint": "0.8.4",
     "tinycolor2": "1.6.0",
     "type-fest": "5.3.1",
