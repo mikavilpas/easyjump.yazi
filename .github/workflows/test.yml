@@ -18,7 +18,7 @@ jobs:
           - name: stable
             method: download
             # renovate: datasource=github-releases depName=sxyazi/yazi
-            version: v25.5.31
+            version: v25.12.29
 
     name: "Test (yazi ${{ matrix.yazi-version.name }})"
     runs-on: ubuntu-24.04
