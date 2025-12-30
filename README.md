@@ -58,10 +58,36 @@ require("easyjump"):setup()
 
 -- or customize the settings
 require("easyjump"):setup({
-  icon_fg = "#94e2d5",
-  first_key_fg = "#45475a",
+  icon_fg = "#94e2d5",      -- color for hint labels
+  first_key_fg = "#45475a", -- color for first char of double-key hints
 })
 ```
+
+### Custom hint keys
+
+You can customize which keys are used for the jump hints:
+
+```lua
+require("easyjump"):setup({
+  -- Characters used as the first key in double-key mode
+  first_keys = "asdfgercwtvxbq", -- 14 keys
+  -- Characters used as the second key in double-key mode
+  second_keys = "uiohklnpym", -- 10 keys
+})
+```
+
+**How it works:**
+
+- **Single labels** = `first_keys` + `second_keys` (used when ≤25 files visible)
+- **Double labels** = `first_keys` × `second_keys` (used when >25 files)
+
+With the default 14 first_keys and 11 second_keys, you get 25 single labels and
+154 double labels.
+
+**Important:** `first_keys` and `second_keys` must not share any characters. If
+they overlap, an error is logged and the defaults are used instead.
+
+### Keymap
 
 Set a shortcut key to toggle easyjump mode. For example, set `i`:
 

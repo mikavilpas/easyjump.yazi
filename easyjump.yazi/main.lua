@@ -1,13 +1,27 @@
 --- @since 25.5.31
 
+-- Default hint key configuration
+-- IMPORTANT: first_keys and second_keys must NOT overlap
 -- stylua: ignore
-local SINGLE_LABELS = {
+local DEFAULT_FIRST_KEYS = {
+  "a", "s", "d", "f", "g", "e", "r", "c", "w", "t", "v", "x", "b", "q"
+}
+
+-- stylua: ignore
+local DEFAULT_SECOND_KEYS = {
+  "u", "i", "o", "h", "j", "k", "l", "n", "p", "y", "m"
+}
+
+-- Default single labels (for backward compatibility with original order)
+-- stylua: ignore
+local DEFAULT_SINGLE_LABELS = {
   "p", "b", "e", "t", "a", "o", "i", "n", "s", "r", "h", "l", "d", "c",
   "u", "m", "f", "g", "w", "v", "k", "j", "x", "y", "q"
 }
 
+-- Default double labels (for backward compatibility with original order)
 -- stylua: ignore
-local NORMAL_DOUBLE_LABELS = {
+local DEFAULT_DOUBLE_LABELS = {
   "au", "ai", "ao", "ah", "aj", "ak", "al", "an",
   "su", "si", "so", "sh", "sj", "sk", "sl", "sn",
   "du", "di", "do", "dh", "dj", "dk", "dl", "dn",
@@ -30,30 +44,125 @@ local NORMAL_DOUBLE_LABELS = {
   "qy", "qm",
 }
 
--- stylua: ignore
-local INPUT_KEY = {
-  "a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
-  "k", "l", "m", "n", "o", "p", "q", "r", "s", "t",
-  "u", "v", "w", "x", "y", "z", "<Esc>", "<Backspace>",
-}
-
--- labels for single keys, corresponding to the file index the label points to
----@type table<string, number>
-local SINGLE_KEY_FILES = {}
-for i, v in ipairs(SINGLE_LABELS) do
-  SINGLE_KEY_FILES[v] = i
+---@param str string
+---@return string[]
+local function string_to_table(str)
+  local result = {}
+  for i = 1, #str do
+    table.insert(result, str:sub(i, i))
+  end
+  return result
 end
 
--- labels for double keys, corresponding to the file index the label points to
----@type table<string, number>
-local DOUBLE_KEY_FILES = {}
-for i, v in ipairs(NORMAL_DOUBLE_LABELS) do
-  DOUBLE_KEY_FILES[v] = i
+---@param keys string|string[]
+---@return string[]
+local function normalize_keys(keys)
+  if type(keys) == "string" then
+    return string_to_table(keys)
+  end
+  return keys
 end
 
-local INPUT_CANDS = {}
-for _, v in ipairs(INPUT_KEY) do
-  table.insert(INPUT_CANDS, { on = v })
+--- Generate single labels from first_keys and second_keys combined
+---@param first_keys string[]
+---@param second_keys string[]
+---@return string[]
+local function generate_single_labels(first_keys, second_keys)
+  local labels = {}
+  -- Add all first_keys
+  for _, k in ipairs(first_keys) do
+    table.insert(labels, k)
+  end
+  -- Add all second_keys
+  for _, k in ipairs(second_keys) do
+    table.insert(labels, k)
+  end
+  return labels
+end
+
+--- Generate double labels from first_keys × second_keys
+---@param first_keys string[]
+---@param second_keys string[]
+---@return string[]
+local function generate_double_labels(first_keys, second_keys)
+  local labels = {}
+  for _, fk in ipairs(first_keys) do
+    for _, sk in ipairs(second_keys) do
+      table.insert(labels, fk .. sk)
+    end
+  end
+  return labels
+end
+
+--- Generate input key candidates
+---@param first_keys string[]
+---@param second_keys string[]
+---@return string[]
+local function generate_input_keys(first_keys, second_keys)
+  local keys = {}
+  local seen = {}
+  -- Add all first_keys
+  for _, k in ipairs(first_keys) do
+    if not seen[k] then
+      table.insert(keys, k)
+      seen[k] = true
+    end
+  end
+
+  -- Add all second_keys
+  for _, k in ipairs(second_keys) do
+    if not seen[k] then
+      table.insert(keys, k)
+      seen[k] = true
+    end
+  end
+
+  -- Add control keys
+  table.insert(keys, "<Esc>")
+  table.insert(keys, "<Backspace>")
+  return keys
+end
+
+--- Build lookup table from label list
+---@param labels string[]
+---@return table<string, number>
+local function build_label_lookup(labels)
+  local lookup = {}
+  for i, v in ipairs(labels) do
+    lookup[v] = i
+  end
+  return lookup
+end
+
+--- Build input candidates for ya.which
+---@param input_keys string[]
+---@return table[]
+local function build_input_cands(input_keys)
+  local cands = {}
+  for _, v in ipairs(input_keys) do
+    table.insert(cands, { on = v })
+  end
+  return cands
+end
+
+--- Validate that first_keys and second_keys don't overlap
+---@param first_keys string[]
+---@param second_keys string[]
+---@return boolean, string?
+local function validate_keys(first_keys, second_keys)
+  local first_set = {}
+  for _, k in ipairs(first_keys) do
+    first_set[k] = true
+  end
+  for _, k in ipairs(second_keys) do
+    if first_set[k] then
+      return false,
+        "Key '"
+          .. k
+          .. "' appears in both first_keys and second_keys. They must not overlap."
+    end
+  end
+  return true, nil
 end
 
 local render = ya.sync(function()
@@ -92,23 +201,24 @@ local toggle_ui = ya.sync(function(st)
     local pos = st.files_indices[tostring(file.url)]
     if not pos then
       return ui.Line({})
-    elseif st.current_files_count > #SINGLE_LABELS then
+    elseif st.current_files_count > #st.single_labels then
       if
         st.double_first_key ~= nil
-        and NORMAL_DOUBLE_LABELS[pos]:sub(1, 1) == st.double_first_key
+        and st.double_labels[pos]:sub(1, 1) == st.double_first_key
       then
         return ui.Line({
-          ui.Span(NORMAL_DOUBLE_LABELS[pos]:sub(1, 1)):fg(st.opt_first_key_fg),
-          ui.Span(NORMAL_DOUBLE_LABELS[pos]:sub(2, 2) .. " ")
-            :fg(st.opt_icon_fg),
+          ui.Span(st.double_labels[pos]:sub(1, 1)):fg(st.opt_first_key_fg),
+          ui.Span(st.double_labels[pos]:sub(2, 2) .. " "):fg(st.opt_icon_fg),
         })
       else
         return ui.Line({
-          ui.Span(NORMAL_DOUBLE_LABELS[pos] .. " "):fg(st.opt_icon_fg),
+          ui.Span(st.double_labels[pos] .. " "):fg(st.opt_icon_fg),
         })
       end
     else
-      return ui.Line({ ui.Span(SINGLE_LABELS[pos] .. " "):fg(st.opt_icon_fg) })
+      return ui.Line({
+        ui.Span(st.single_labels[pos] .. " "):fg(st.opt_icon_fg),
+      })
     end
   end
   st.entity_label_id = Entity:children_add(entity_label, 2001)
@@ -123,12 +233,8 @@ local update_double_first_key = ya.sync(function(state, str)
   state.double_first_key = str
 end)
 
-local function read_input_todo(
-  current_files_count,
-  cursor,
-  offset,
-  first_key_of_label
-)
+---@param ctx easyjump.InitResult
+local function read_input_todo(ctx)
   ---@type number?
   local cand = nil
   ---@type string?
@@ -137,7 +243,7 @@ local function read_input_todo(
   local key_num_count = 0
 
   while true do
-    cand = ya.which({ cands = INPUT_CANDS, silent = true })
+    cand = ya.which({ cands = ctx.input_cands, silent = true })
 
     -- not candy key, continue get input
     if cand == nil then
@@ -145,27 +251,30 @@ local function read_input_todo(
     end
 
     -- hit exit easyjump
-    if INPUT_KEY[cand] == "<Esc>" or INPUT_KEY[cand] == "z" then
+    if ctx.input_keys[cand] == "<Esc>" or ctx.input_keys[cand] == "z" then
       return
     end
 
     -- hit single key
-    if current_files_count <= #SINGLE_LABELS then
-      key = INPUT_KEY[cand]
-      local file_index = SINGLE_KEY_FILES[key]
-      if file_index == nil or file_index > current_files_count then
+    if ctx.current_files_count <= #ctx.single_labels then
+      key = ctx.input_keys[cand]
+      local file_index = ctx.single_key_files[key]
+      if file_index == nil or file_index > ctx.current_files_count then
         goto nextkey
       else
         -- ya.mgr_emit is deprecated in https://github.com/sxyazi/yazi/pull/2653
-        (ya.mgr_emit or ya.emit)("arrow", { file_index - cursor - 1 + offset })
+        (ya.mgr_emit or ya.emit)(
+          "arrow",
+          { file_index - ctx.cursor - 1 + ctx.offset }
+        )
         return
       end
     end
 
     -- hit backout a double key
     if
-      INPUT_KEY[cand] == "<Backspace>"
-      and current_files_count > #SINGLE_LABELS
+      ctx.input_keys[cand] == "<Backspace>"
+      and ctx.current_files_count > #ctx.single_labels
     then
       key_num_count = 0 -- backout to get the first double key
       update_double_first_key(nil) -- apply to the render change for first key
@@ -173,9 +282,9 @@ local function read_input_todo(
     end
 
     -- hit the first double key
-    if key_num_count == 0 and current_files_count > #SINGLE_LABELS then
-      key = INPUT_KEY[cand]
-      if first_key_of_label[key] then
+    if key_num_count == 0 and ctx.current_files_count > #ctx.single_labels then
+      key = ctx.input_keys[cand]
+      if ctx.first_key_of_label[key] then
         key_num_count = key_num_count + 1
         update_double_first_key(key) -- apply to the render change for first key
       else
@@ -185,14 +294,17 @@ local function read_input_todo(
     end
 
     -- hit the second double key
-    if key_num_count == 1 and current_files_count > #SINGLE_LABELS then
-      local double_key = key .. INPUT_KEY[cand]
-      local file_index = DOUBLE_KEY_FILES[double_key]
-      if file_index == nil or file_index > current_files_count then -- get the second double key fail, continue to get it
+    if key_num_count == 1 and ctx.current_files_count > #ctx.single_labels then
+      local double_key = key .. ctx.input_keys[cand]
+      local file_index = ctx.double_key_files[double_key]
+      if file_index == nil or file_index > ctx.current_files_count then -- get the second double key fail, continue to get it
         goto nextkey
       else
         -- ya.mgr_emit is deprecated in https://github.com/sxyazi/yazi/pull/2653
-        (ya.mgr_emit or ya.emit)("arrow", { file_index - cursor - 1 + offset })
+        (ya.mgr_emit or ya.emit)(
+          "arrow",
+          { file_index - ctx.cursor - 1 + ctx.offset }
+        )
         return
       end
     end
@@ -204,14 +316,32 @@ end
 ---@class(exact) easyjump.state
 ---@field opt_icon_fg string
 ---@field opt_first_key_fg string
+---@field single_labels string[]
+---@field double_labels string[]
+---@field input_keys string[]
+---@field single_key_files table<string, number>
+---@field double_key_files table<string, number>
+---@field input_cands table[]
 ---@field entity_label_id number
 ---@field status_ej_id number
 ---@field files_indices table<string, number> # file url to index
 ---@field current_files_count number
 ---@field double_first_key string
 
+---@class easyjump.InitResult
+---@field current_files_count number
+---@field cursor number
+---@field offset number
+---@field first_key_of_label table<string, string>
+---@field single_labels string[]
+---@field input_keys string[]
+---@field single_key_files table<string, number>
+---@field double_key_files table<string, number>
+---@field input_cands table[]
+
 -- init to record file position and the file num
 ---@param state easyjump.state
+---@return easyjump.InitResult?
 local init = ya.sync(function(state)
   state.files_indices = {}
   local first_key_of_label = {}
@@ -222,15 +352,22 @@ local init = ya.sync(function(state)
 
   for i, file in ipairs(visible_files) do
     state.files_indices[tostring(file.url)] = i
-    if state.current_files_count > #SINGLE_LABELS then
-      first_key_of_label[NORMAL_DOUBLE_LABELS[i]:sub(1, 1)] = ""
+    if state.current_files_count > #state.single_labels then
+      first_key_of_label[state.double_labels[i]:sub(1, 1)] = ""
     end
   end
 
-  return state.current_files_count,
-    folder.cursor,
-    folder.offset,
-    first_key_of_label
+  return {
+    current_files_count = state.current_files_count,
+    cursor = folder.cursor,
+    offset = folder.offset,
+    first_key_of_label = first_key_of_label,
+    single_labels = state.single_labels,
+    input_keys = state.input_keys,
+    single_key_files = state.single_key_files,
+    double_key_files = state.double_key_files,
+    input_cands = state.input_cands,
+  }
 end)
 
 ---@param state easyjump.state
@@ -246,19 +383,53 @@ return {
     opts = opts or {}
     state.opt_icon_fg = opts.icon_fg or "#fda1a1"
     state.opt_first_key_fg = opts.first_key_fg or "#df6249"
+
+    -- Configure hint keys
+    local using_custom_keys = opts.first_keys ~= nil or opts.second_keys ~= nil
+    local first_keys = normalize_keys(opts.first_keys or DEFAULT_FIRST_KEYS)
+    local second_keys = normalize_keys(opts.second_keys or DEFAULT_SECOND_KEYS)
+
+    -- Validate that first_keys and second_keys don't overlap
+    local valid, err = validate_keys(first_keys, second_keys)
+    if not valid then
+      ya.notify({
+        title = "easyjump",
+        content = err .. " Falling back to defaults.",
+        timeout = 5,
+        level = "error",
+      })
+      -- Fall back to defaults
+      first_keys = DEFAULT_FIRST_KEYS
+      second_keys = DEFAULT_SECOND_KEYS
+      using_custom_keys = false
+    end
+
+    -- Generate labels
+    -- Use default labels for backward compatibility unless custom keys are provided
+    if using_custom_keys then
+      state.single_labels = generate_single_labels(first_keys, second_keys)
+      state.double_labels = generate_double_labels(first_keys, second_keys)
+    else
+      state.single_labels = DEFAULT_SINGLE_LABELS
+      state.double_labels = DEFAULT_DOUBLE_LABELS
+    end
+    state.input_keys = generate_input_keys(first_keys, second_keys)
+
+    -- Build lookup tables
+    state.single_key_files = build_label_lookup(state.single_labels)
+    state.double_key_files = build_label_lookup(state.double_labels)
+    state.input_cands = build_input_cands(state.input_keys)
   end,
 
   entry = function(_, _)
-    local current_files_count, cursor, offset, first_key_of_label = init()
+    local ctx = init()
 
-    if current_files_count == nil or current_files_count == 0 then
+    if ctx == nil or ctx.current_files_count == 0 then
       return
     end
 
     toggle_ui()
-
-    read_input_todo(current_files_count, cursor, offset, first_key_of_label)
-
+    read_input_todo(ctx)
     toggle_ui()
     clear_state()
   end,

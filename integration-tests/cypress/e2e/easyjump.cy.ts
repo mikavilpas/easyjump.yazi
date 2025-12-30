@@ -165,4 +165,55 @@ describe("easyjump", () => {
       // work when I tried it out
     })
   })
+
+  it("can use custom hint keys", () => {
+    cy.visit("/")
+    startYaziApplication({
+      dir: "lots-of-files",
+      configModifications: ["customize_keys.lua"],
+    }).then((term) => {
+      // wait for the yazi ui to be visible
+      cy.contains("NOR")
+      isFileSelected(term.dir.contents["lots-of-files"].contents.file.name)
+
+      // activate the easyjump plugin
+      cy.typeIntoTerminal("i")
+
+      // wait for easyjump mode to activate
+      cy.contains("[EJ]")
+
+      // the custom keys are: first_keys="qwertasdfgzxcv", second_keys="yuiophjklnm"
+      // double labels are generated as first_keys × second_keys
+      // so first label is "qy", second is "qu", third is "qi", etc.
+      // type "qu" to jump to the second file (file_1)
+      cy.typeIntoTerminal("qu")
+      isFileSelected(term.dir.contents["lots-of-files"].contents.file_1.name)
+    })
+  })
+
+  it("shows error notification when first_keys and second_keys overlap", () => {
+    cy.visit("/")
+    startYaziApplication({
+      dir: "lots-of-files",
+      configModifications: ["duplicate_keys.lua"],
+    }).then((term) => {
+      // wait for the yazi ui to be visible
+      cy.contains("NOR")
+
+      // the error notification should be displayed because "a" is in both
+      // first_keys and second_keys
+      cy.contains("appears in both first_keys and second_keys")
+      cy.contains("Falling back to defaults")
+
+      // the plugin should still work with default keys
+      isFileSelected(term.dir.contents["lots-of-files"].contents.file.name)
+      cy.typeIntoTerminal("i")
+      cy.contains("[EJ]")
+
+      // default double labels start with "au", "ai", "ao", etc.
+      // type "ao" to jump to the third file
+      cy.typeIntoTerminal("ao")
+      isFileSelected(term.dir.contents["lots-of-files"].contents.file_1.name)
+    })
+  })
 })

@@ -46,6 +46,14 @@ export const MyTestDirectorySchema = z.object({
           name: z.literal("customize_colors.lua"),
           type: z.literal("file"),
         }),
+        "customize_keys.lua": z.object({
+          name: z.literal("customize_keys.lua"),
+          type: z.literal("file"),
+        }),
+        "duplicate_keys.lua": z.object({
+          name: z.literal("duplicate_keys.lua"),
+          type: z.literal("file"),
+        }),
       }),
     }),
     "dir-with-jumpable-files": z.object({
@@ -185,6 +193,8 @@ export const testDirectoryFiles = z.enum([
   ".config/yazi",
   ".config",
   "config-modifications/customize_colors.lua",
+  "config-modifications/customize_keys.lua",
+  "config-modifications/duplicate_keys.lua",
   "config-modifications",
   "dir-with-jumpable-files/file1",
   "dir-with-jumpable-files/file2",
