@@ -89,7 +89,28 @@ describe("easyjump", () => {
     })
   })
 
-  it("can cancel the jump", () => {
+  it("can cancel the jump in singlekey mode", () => {
+    cy.visit("/")
+    startYaziApplication({
+      dir: "dir-with-jumpable-files",
+    }).then((term) => {
+      cy.contains("NOR")
+      const file1 =
+        term.dir.contents["dir-with-jumpable-files"].contents.file1.name
+      isFileSelected(file1)
+
+      cy.typeIntoTerminal("i")
+      cy.contains("[EJ]")
+      // cancel the jump and verify the label disappears
+      cy.typeIntoTerminal("{esc}")
+      cy.contains("[EJ]").should("not.exist")
+
+      // the cursor should still be on the original file
+      isFileSelected(file1)
+    })
+  })
+
+  it("can cancel the jump in multikey mode", () => {
     cy.visit("/")
     startYaziApplication({
       dir: "lots-of-files",
@@ -98,7 +119,9 @@ describe("easyjump", () => {
       isFileSelected(term.dir.contents["lots-of-files"].contents.file.name)
       cy.typeIntoTerminal("i")
 
+      // verify we are in multikey mode by checking for two-character labels
       textIsVisibleWithColor("ao", candidateColor)
+      cy.contains("[EJ]")
       cy.typeIntoTerminal("a")
 
       // the first character is highlighted to mark that it has been received
@@ -110,6 +133,7 @@ describe("easyjump", () => {
 
       // the cursor should still be on the original file
       isFileSelected(term.dir.contents["lots-of-files"].contents.file.name)
+      cy.contains("[EJ]").should("not.exist")
     })
   })
 
