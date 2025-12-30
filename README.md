@@ -68,11 +68,12 @@ require("easyjump"):setup({
 You can customize which keys are used for the jump hints:
 
 ```lua
+-- ~/.config/yazi/init.lua
+
 require("easyjump"):setup({
-  -- Characters used as the first key in double-key mode
+  -- example customization - you can choose your own keys
   first_keys = "asdfgercwtvxbq", -- 14 keys
-  -- Characters used as the second key in double-key mode
-  second_keys = "uiohklnpym", -- 10 keys
+  second_keys = "yuiophjklnm", -- 11 keys
 })
 ```
 
