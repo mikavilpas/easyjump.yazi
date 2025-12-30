@@ -85,7 +85,8 @@ With the default 14 first_keys and 11 second_keys, you get 25 single labels and
 154 double labels.
 
 **Important:** `first_keys` and `second_keys` must not share any characters. If
-they overlap, an error is logged and the defaults are used instead.
+they overlap, an error notification is displayed and the defaults are used
+instead.
 
 ### Keymap
 
