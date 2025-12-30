@@ -2,3 +2,4 @@ node_modules
 integration-tests/test-environment/testdirs
 integration-tests/dist
 integration-tests/cypress/videos
+integration-tests/cypress/screenshots
