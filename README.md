@@ -29,12 +29,16 @@ ya pkg add mikavilpas/easyjump.yazi:easyjump
 <summary>Install with yazi.nvim</summary>
 
 These instructions assume you are using
-<https://github.com/mikavilpas/yazi.nvim/blob/main/documentation/plugin-management.md>
+<https://github.com/mikavilpas/yazi.nvim/blob/main/documentation/plugin-management.md>.
+
+It's recommended to set `version = "*"` to avoid lots of testing related package
+updates that are done automatically.
 
 ```lua
 return {
   name = "easyjump.yazi",
   url = "https://github.com/mikavilpas/easyjump.yazi",
+  version = "*", -- use latest release
   lazy = true,
   build = function(plugin)
     require("yazi.plugin").build_plugin(plugin, { sub_dir = "easyjump.yazi" })
