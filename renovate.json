@@ -23,6 +23,19 @@
       "matchStrings": [
         "#\\s*renovate:\\s*datasource=git-refs\\s+packageName=(?<packageName>\\S+)\\s*[\\r\\n]+[^:]+:\\s*(?<currentDigest>\\S+)"
       ]
+    },
+    {
+      "description": [
+        "Update semantic-release packages in GitHub Action workflows",
+        "semantic-release recommends not installing these as dependencies to the project, but instead using them directly in CI/CD pipelines.",
+        "https://semantic-release.gitbook.io/semantic-release/usage/installation#local-installation"
+      ],
+      "customType": "regex",
+      "datasourceTemplate": "npm",
+      "managerFilePatterns": [".github/workflows/*.yml"],
+      "matchStrings": [
+        "#\\s*renovate:\\s*datasource=npm\\s+depName=(?<depName>\\S+)\\s*[\\r\\n]+\\s*[A-Z_]+:\\s*(?<currentValue>\\S+)"
+      ]
     }
   ]
 }
