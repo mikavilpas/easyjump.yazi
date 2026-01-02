@@ -1,41 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "automerge": true,
-  "commitBodyTable": true,
-  "extends": ["config:best-practices", "group:allNonMajor"],
+  "extends": ["local>mikavilpas/mika-renovate"],
   "git-submodules": {
     "enabled": true
-  },
-  "customManagers": [
-    {
-      "customType": "regex",
-      "datasourceTemplate": "github-releases",
-      "managerFilePatterns": [".github/workflows/*.yml"],
-      "matchStrings": [
-        "#\\s*renovate:\\s*datasource=github-releases\\s+depName=(?<depName>\\S+)\\s*[\\r\\n]+[^:]+:\\s*(?<currentValue>\\S+)"
-      ]
-    },
-    {
-      "customType": "regex",
-      "datasourceTemplate": "git-refs",
-      "currentValueTemplate": "main",
-      "managerFilePatterns": [".github/workflows/*.yml"],
-      "matchStrings": [
-        "#\\s*renovate:\\s*datasource=git-refs\\s+packageName=(?<packageName>\\S+)\\s*[\\r\\n]+[^:]+:\\s*(?<currentDigest>\\S+)"
-      ]
-    },
-    {
-      "description": [
-        "Update semantic-release packages in GitHub Action workflows",
-        "semantic-release recommends not installing these as dependencies to the project, but instead using them directly in CI/CD pipelines.",
-        "https://semantic-release.gitbook.io/semantic-release/usage/installation#local-installation"
-      ],
-      "customType": "regex",
-      "datasourceTemplate": "npm",
-      "managerFilePatterns": [".github/workflows/*.yml"],
-      "matchStrings": [
-        "#\\s*renovate:\\s*datasource=npm\\s+depName=(?<depName>\\S+)\\s*[\\r\\n]+\\s*[A-Z_]+:\\s*(?<currentValue>\\S+)"
-      ]
-    }
-  ]
+  }
 }
