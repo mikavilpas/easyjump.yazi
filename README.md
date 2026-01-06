@@ -5,8 +5,8 @@ A yazi plugin for quickly jumping to the visible files.
 A bit like [hop.nvim](https://github.com/smoka7/hop.nvim) in Neovim but for
 yazi.
 
-Tested on yazi 25.5.31, stable, and nightly. The exact versions are visible in
-[test.yml](.github/workflows/test.yml).
+Tested on yazi nightly, stable, 25.12.29, and 25.5.31. The exact versions are
+visible in [test.yml](.github/workflows/test.yml).
 
 ## Usage
 
