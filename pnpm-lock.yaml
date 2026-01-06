@@ -36,7 +36,7 @@ importers:
         specifier: 1.4.6
         version: 1.4.6
       concurrently:
-        specifier: ^9.2.1
+        specifier: 9.2.1
         version: 9.2.1
       cypress:
         specifier: 15.8.1
