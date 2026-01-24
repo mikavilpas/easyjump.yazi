@@ -23,6 +23,9 @@ jobs:
           - name: 25.12.29
             method: download
             version: v25.12.29
+          - name: v26.1.4
+            method: download
+            version: v26.1.4
           - name: 25.5.31
             method: download
             version: v25.5.31
