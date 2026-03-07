@@ -51,13 +51,13 @@ jobs:
 
           ubi --project mikefarah/yq
 
-          VERSION=$(yq '.tools."ubi:BurntSushi/ripgrep".version' .mise.toml)
+          VERSION=$(yq '.tools."github:BurntSushi/ripgrep".version' mise.toml)
           ubi --project BurntSushi/ripgrep --tag "$VERSION" --exe rg
 
-          VERSION=$(yq '.tools."ubi:junegunn/fzf"' .mise.toml)
+          VERSION=$(yq '.tools."github:junegunn/fzf"' mise.toml)
           ubi --project junegunn/fzf --tag "v$VERSION"
 
-          VERSION=$(yq '.tools."ubi:sharkdp/fd"' .mise.toml)
+          VERSION=$(yq '.tools."github:sharkdp/fd"' mise.toml)
           ubi --project sharkdp/fd --tag "v$VERSION"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

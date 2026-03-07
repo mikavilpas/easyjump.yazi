@@ -1,0 +1,10 @@
+
+[tools]
+# yazi dependencies
+"github:sharkdp/fd" = "10.3.0"
+"github:junegunn/fzf" = "0.70.0"
+"github:BurntSushi/ripgrep" = { version = "15.1.0", exe = "rg" }
+
+# development tools
+"github:JohnnyMorganz/stylua" = "2.3.1"
+actionlint = "1.7.11"
