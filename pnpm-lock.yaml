@@ -27,8 +27,8 @@ importers:
         specifier: 10.0.1
         version: 10.0.1(eslint@10.0.2)
       '@tui-sandbox/library':
-        specifier: 12.3.0
-        version: 12.3.0(cypress@15.11.0)(prettier@3.8.1)(type-fest@5.4.4)(typescript@5.9.3)(wait-on@9.0.4)(zod@4.3.6)
+        specifier: 12.3.1
+        version: 12.3.1(cypress@15.11.0)(prettier@3.8.1)(type-fest@5.4.4)(typescript@5.9.3)(wait-on@9.0.4)(zod@4.3.6)
       '@types/node':
         specifier: 24.12.0
         version: 24.12.0
@@ -325,14 +325,6 @@ packages:
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
 
-  '@isaacs/balanced-match@4.0.1':
-    resolution: {integrity: sha512-yzMTt9lEb8Gv7zRioUilSglI0c0smZ9k5D65677DLWLtWJaXIS3CqcGyUFByYKlnUj6TkjLVs54fBl6+TiGQDQ==}
-    engines: {node: 20 || >=22}
-
-  '@isaacs/brace-expansion@5.0.0':
-    resolution: {integrity: sha512-ZT55BDLV0yv0RBm2czMiZ+SqCGO7AvmOM3G/w2xhVPH+te0aKgFjmBvGlL1dH+ql2tgGO3MVrbb3jCKyvpgnxA==}
-    engines: {node: 20 || >=22}
-
   '@msgpack/msgpack@2.8.0':
     resolution: {integrity: sha512-h9u4u/jiIRKbq25PM+zymTyW6bhTzELvOoUd+AvYriWOAKpLGnIamaET3pnHYoI5iYphAHBI4ayx0MehR+VVPQ==}
     engines: {node: '>= 10'}
@@ -373,19 +365,19 @@ packages:
   '@standard-schema/spec@1.0.0':
     resolution: {integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==}
 
-  '@trpc/client@11.8.1':
-    resolution: {integrity: sha512-L/SJFGanr9xGABmuDoeXR4xAdHJmsXsiF9OuH+apecJ+8sUITzVT1EPeqp0ebqA6lBhEl5pPfg3rngVhi/h60Q==}
+  '@trpc/client@11.11.0':
+    resolution: {integrity: sha512-tIPeetFO8GT/o0In+Lk5JA3f29m8qCBSaKNatQdAx6BOfZFjpqHOaoAsCmE/MdUu9AVhPRPorcoqUlZUdDc5gA==}
     peerDependencies:
-      '@trpc/server': 11.8.1
+      '@trpc/server': 11.11.0
       typescript: '>=5.7.2'
 
-  '@trpc/server@11.8.1':
-    resolution: {integrity: sha512-P4rzZRpEL7zDFgjxK65IdyH0e41FMFfTkQkuq0BA5tKcr7E6v9/v38DEklCpoDN6sPiB1Sigy/PUEzHENhswDA==}
+  '@trpc/server@11.11.0':
+    resolution: {integrity: sha512-5CBK5Oit8qv2k2zgIHrUsa12tnCIVpZIJLvMa4n2tejuWz/d7Qb1B1v9zZioapr7y8sEvnk8zPcNnxcT2LlQxg==}
     peerDependencies:
       typescript: '>=5.7.2'
 
-  '@tui-sandbox/library@12.3.0':
-    resolution: {integrity: sha512-Id3RY3t+eVmasps3/N1TBK88X7TOqcIVqKclvcVluFOLp5pGiW6ccudt4GSCQ1Ld7qswbqSdTIQcVflEeK9Z9A==}
+  '@tui-sandbox/library@12.3.1':
+    resolution: {integrity: sha512-+1TcJr4xzLpYLQlrRP/x7yjUwl/4hoz4HU2DFD8RhDaHtsZygDkmYRMtJ9MH2KCCRkd8rfERXMQtVngyXDBEkA==}
     engines: {node: '>=24.0.0'}
     hasBin: true
     peerDependencies:
@@ -710,8 +702,8 @@ packages:
   core-util-is@1.0.2:
     resolution: {integrity: sha512-3lqz5YjWTYnW6dlDa5TLaTCcShfar1e40rmcJVwCBJC6mWlFuj0eCHIElmG1g5kyuJ/GD+8Wn4FFCcz4gJPfaQ==}
 
-  cors@2.8.5:
-    resolution: {integrity: sha512-KIHbLJqu73RGr/hnbrO9uBeixNGuvSQjul/jdFvS/KFSIH1hWVd1ng7zOHx+YrEfInLG7q4n6GHQ9cDtxv/P6g==}
+  cors@2.8.6:
+    resolution: {integrity: sha512-tJtZBBHA6vjIAaF6EnIaq6laBBP9aq/Y3ouVJjEfoHbRBcHBAHYcMh/w8LDrk2PvIMMq8gmopa5D4V8RmbrxGw==}
     engines: {node: '>= 0.10'}
 
   cross-spawn@7.0.6:
@@ -1265,10 +1257,6 @@ packages:
   mimic-fn@2.1.0:
     resolution: {integrity: sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==}
     engines: {node: '>=6'}
-
-  minimatch@10.1.1:
-    resolution: {integrity: sha512-enIvLvRAFZYXJzkCYG5RKmPfrFArdLv+R+lbQ53BmIMLIry74bjKzX6iHAm8WYamJkhSSEabrWN5D97XnKObjQ==}
-    engines: {node: 20 || >=22}
 
   minimatch@10.2.2:
     resolution: {integrity: sha512-+G4CpNBxa5MprY+04MbgOw1v7So6n5JY166pFi9KfYwT78fxScCeSNQSNzp6dpPSW2rONOps6Ocam1wFhCgoVw==}
@@ -1959,12 +1947,6 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
-  '@isaacs/balanced-match@4.0.1': {}
-
-  '@isaacs/brace-expansion@5.0.0':
-    dependencies:
-      '@isaacs/balanced-match': 4.0.1
-
   '@msgpack/msgpack@2.8.0': {}
 
   '@oxlint-tsgolint/darwin-arm64@0.16.0':
@@ -1992,26 +1974,26 @@ snapshots:
 
   '@standard-schema/spec@1.0.0': {}
 
-  '@trpc/client@11.8.1(@trpc/server@11.8.1(typescript@5.9.3))(typescript@5.9.3)':
+  '@trpc/client@11.11.0(@trpc/server@11.11.0(typescript@5.9.3))(typescript@5.9.3)':
     dependencies:
-      '@trpc/server': 11.8.1(typescript@5.9.3)
+      '@trpc/server': 11.11.0(typescript@5.9.3)
       typescript: 5.9.3
 
-  '@trpc/server@11.8.1(typescript@5.9.3)':
+  '@trpc/server@11.11.0(typescript@5.9.3)':
     dependencies:
       typescript: 5.9.3
 
-  '@tui-sandbox/library@12.3.0(cypress@15.11.0)(prettier@3.8.1)(type-fest@5.4.4)(typescript@5.9.3)(wait-on@9.0.4)(zod@4.3.6)':
+  '@tui-sandbox/library@12.3.1(cypress@15.11.0)(prettier@3.8.1)(type-fest@5.4.4)(typescript@5.9.3)(wait-on@9.0.4)(zod@4.3.6)':
     dependencies:
       '@catppuccin/palette': 1.7.1
-      '@trpc/client': 11.8.1(@trpc/server@11.8.1(typescript@5.9.3))(typescript@5.9.3)
-      '@trpc/server': 11.8.1(typescript@5.9.3)
+      '@trpc/client': 11.11.0(@trpc/server@11.11.0(typescript@5.9.3))(typescript@5.9.3)
+      '@trpc/server': 11.11.0(typescript@5.9.3)
       '@xterm/addon-clipboard': 0.2.0
       '@xterm/addon-fit': 0.11.0
       '@xterm/addon-unicode11': 0.9.0
       '@xterm/xterm': 6.0.0
       concurrently: 9.2.1
-      cors: 2.8.5
+      cors: 2.8.6
       cypress: 15.11.0
       dree: 5.1.5
       express: 5.2.1
@@ -2354,7 +2336,7 @@ snapshots:
 
   core-util-is@1.0.2: {}
 
-  cors@2.8.5:
+  cors@2.8.6:
     dependencies:
       object-assign: 4.1.1
       vary: 1.1.2
@@ -2441,7 +2423,7 @@ snapshots:
 
   dree@5.1.5:
     dependencies:
-      minimatch: 10.1.1
+      minimatch: 10.2.2
       yargs: 17.7.2
 
   dunder-proto@1.0.1:
@@ -2983,10 +2965,6 @@ snapshots:
       mime-db: 1.54.0
 
   mimic-fn@2.1.0: {}
-
-  minimatch@10.1.1:
-    dependencies:
-      '@isaacs/brace-expansion': 5.0.0
 
   minimatch@10.2.2:
     dependencies:
