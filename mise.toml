@@ -2,7 +2,7 @@
 [tools]
 # yazi dependencies
 "github:sharkdp/fd" = "10.4.2"
-"github:junegunn/fzf" = "0.70.0"
+"github:junegunn/fzf" = "0.71.0"
 "github:BurntSushi/ripgrep" = { version = "15.1.0", exe = "rg" }
 
 # development tools
