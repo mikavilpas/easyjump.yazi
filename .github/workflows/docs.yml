@@ -1,0 +1,6 @@
+name: Documentation
+on: [pull_request]
+jobs:
+  check-links:
+    uses: mikavilpas/dotfiles/.github/workflows/docs.yml@8bd28c170503debeb485672a379de340c2be65e2 # main
+    secrets: inherit
