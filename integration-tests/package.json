@@ -17,7 +17,7 @@
     "cypress": "15.14.1",
     "eslint": "10.2.1",
     "eslint-config-prettier": "10.1.8",
-    "eslint-plugin-no-only-tests": "3.3.0",
+    "eslint-plugin-no-only-tests": "3.4.0",
     "eslint-plugin-oxlint": "1.62.0",
     "oxlint-tsgolint": "0.22.1",
     "tinycolor2": "1.6.0",
