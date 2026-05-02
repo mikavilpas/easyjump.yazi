@@ -48,8 +48,8 @@ importers:
         specifier: 10.1.8
         version: 10.1.8(eslint@10.2.1)
       eslint-plugin-no-only-tests:
-        specifier: 3.3.0
-        version: 3.3.0
+        specifier: 3.4.0
+        version: 3.4.0
       eslint-plugin-oxlint:
         specifier: 1.62.0
         version: 1.62.0(oxlint@1.57.0(oxlint-tsgolint@0.22.1))
@@ -959,8 +959,8 @@ packages:
     peerDependencies:
       eslint: '>=7.0.0'
 
-  eslint-plugin-no-only-tests@3.3.0:
-    resolution: {integrity: sha512-brcKcxGnISN2CcVhXJ/kEQlNa0MEfGRtwKtWA16SkqXHKitaKIMrfemJKLKX1YqDU5C/5JY3PvZXd5jEW04e0Q==}
+  eslint-plugin-no-only-tests@3.4.0:
+    resolution: {integrity: sha512-4S3/9Nb7A2tiMcpzEQE9bQSlpeOz6WJkgryBuou/SA8W2x2c8Zf4j0NvTKBjv6qNhF9T79tmkecm/0CHqV0UGg==}
     engines: {node: '>=5.0.0'}
 
   eslint-plugin-oxlint@1.62.0:
@@ -2719,7 +2719,7 @@ snapshots:
     dependencies:
       eslint: 10.2.1
 
-  eslint-plugin-no-only-tests@3.3.0: {}
+  eslint-plugin-no-only-tests@3.4.0: {}
 
   eslint-plugin-oxlint@1.62.0(oxlint@1.57.0(oxlint-tsgolint@0.22.1)):
     dependencies:
