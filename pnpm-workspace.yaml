@@ -1,5 +1,9 @@
 packages:
   - ./integration-tests/
+allowBuilds:
+  cypress: true
+  esbuild: true
+saveExact: true
 
 onlyBuiltDependencies:
   - cypress
