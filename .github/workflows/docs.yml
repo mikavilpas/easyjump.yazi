@@ -2,5 +2,5 @@ name: Documentation
 on: [pull_request]
 jobs:
   check-links:
-    uses: mikavilpas/dotfiles/.github/workflows/docs.yml@19932c72d4beb1fada2c72670e12194e43c619a9 # main
+    uses: mikavilpas/dotfiles/.github/workflows/docs.yml@e4998d18b7502db2b550c3bad7fb17c4b27eb6bd # main
     secrets: inherit
