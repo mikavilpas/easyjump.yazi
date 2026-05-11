@@ -15,20 +15,17 @@ jobs:
           - name: nightly
             method: cargo-install
             # renovate: datasource=git-refs packageName=https://github.com/sxyazi/yazi
-            commit: 62dd22b8daee4fa90dfcc94b1d5d39e1ead3ba0e
+            commit: 247f925e532236aa4e0dc6ac1a3e0a0263083ce6
           - name: stable
             method: download
             # renovate: datasource=github-releases depName=sxyazi/yazi
-            version: v26.1.22
-          - name: 25.12.29
+            version: v26.5.6
+          - name: v26.1.22
             method: download
-            version: v25.12.29
+            version: v26.1.22
           - name: v26.1.4
             method: download
             version: v26.1.4
-          - name: 25.5.31
-            method: download
-            version: v25.5.31
 
     name: "Test (yazi ${{ matrix.yazi-version.name }})"
     runs-on: ubuntu-24.04
@@ -92,7 +89,7 @@ jobs:
           yazi --version
           ya --version
 
-      - uses: pnpm/action-setup@8912a9102ac27614460f54aedde9e1e7f9aec20d # v6.0.5
+      - uses: pnpm/action-setup@91ab88e2619ed1f46221f0ba42d1492c02baf788 # v6.0.6
         with:
           # https://github.com/pnpm/action-setup?tab=readme-ov-file#use-cache-to-reduce-installation-time
           run_install: false
