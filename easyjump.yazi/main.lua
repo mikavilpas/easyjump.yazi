@@ -258,10 +258,7 @@ local function read_single_key(ctx)
       local file_index = ctx.single_key_files[key]
       if file_index and file_index <= ctx.current_files_count then
         -- ya.mgr_emit is deprecated in https://github.com/sxyazi/yazi/pull/2653
-        (ya.mgr_emit or ya.emit)(
-          "arrow",
-          { file_index - ctx.cursor - 1 + ctx.offset }
-        )
+        ya.emit("arrow", { file_index - ctx.cursor - 1 + ctx.offset })
         return -- jumped
       end
       -- invalid key for current file count, wait for next
@@ -318,10 +315,7 @@ local function read_double_second_key(ctx, first_key)
       local file_index = ctx.double_key_files[double_key]
       if file_index and file_index <= ctx.current_files_count then
         -- ya.mgr_emit is deprecated in https://github.com/sxyazi/yazi/pull/2653
-        (ya.mgr_emit or ya.emit)(
-          "arrow",
-          { file_index - ctx.cursor - 1 + ctx.offset }
-        )
+        ya.emit("arrow", { file_index - ctx.cursor - 1 + ctx.offset })
         return "jumped"
       end
       -- invalid second key, wait for next
