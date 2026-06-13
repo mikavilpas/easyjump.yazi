@@ -4,6 +4,7 @@ import { readdir, readFile } from "fs/promises"
 import path from "path"
 import { inspect } from "util"
 
+const __dirname = path.dirname(new URL(import.meta.url).pathname)
 const testDirs = path.resolve(__dirname, "test-environment/testdirs")
 export default defineConfig({
   e2e: {
