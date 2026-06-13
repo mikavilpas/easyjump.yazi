@@ -21,6 +21,9 @@ export const startYaziApplication = ({
         // yazi needs this to be able to start
         term.recipes.supportDA1()
       },
+      additionalEnvironmentVariables: {
+        MISE_NO_CONFIG: "1",
+      },
     })
     .then((term) => {
       // link the source code to be available in the test environment
