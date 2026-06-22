@@ -33,7 +33,7 @@ jobs:
           - name: nightly
             method: cargo-install
             # renovate: datasource=git-refs packageName=https://github.com/sxyazi/yazi
-            commit: f1e93d7f528b22fdeaf66b198c73e32a7040a90c
+            commit: 4f45ddb514c3db558da0c5fffabaaa44f18cc18e
 
     name: "Test (yazi ${{ matrix.yazi-version.name }})"
     runs-on: ubuntu-24.04
