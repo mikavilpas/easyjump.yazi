@@ -1,5 +1,7 @@
-import type { MyNeovimConfigModification } from "@tui-sandbox/library"
 import path from "path"
+
+import type { MyNeovimConfigModification } from "@tui-sandbox/library"
+
 import type { MyTestDirectoryFile } from "../../../MyTestDirectory"
 import type { TerminalTestApplicationContext } from "../../support/tui-sandbox"
 
