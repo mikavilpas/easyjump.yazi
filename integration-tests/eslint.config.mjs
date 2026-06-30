@@ -1,9 +1,8 @@
+import eslint from "@eslint/js"
 // @ts-check
 import eslintConfigPrettier from "eslint-config-prettier"
 import noOnlyTests from "eslint-plugin-no-only-tests"
 import oxlint from "eslint-plugin-oxlint"
-
-import eslint from "@eslint/js"
 import { defineConfig } from "eslint/config"
 import tseslint from "typescript-eslint"
 

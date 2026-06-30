@@ -8,14 +8,13 @@
   "main": "index.js",
   "scripts": {
     "dev": "pnpm --filter ./integration-tests/ dev",
+    "format:check": "oxfmt --check",
     "postinstall": "git submodule update --init --recursive",
     "lint": "pnpm --filter ./integration-tests/ lint",
     "tui": "pnpm --filter ./integration-tests/ exec tui"
   },
   "devDependencies": {
-    "prettier": "3.8.5",
-    "prettier-plugin-organize-imports": "4.3.0",
-    "prettier-plugin-packagejson": "3.0.2"
+    "oxfmt": "0.56.0"
   },
   "packageManager": "pnpm@11.9.0"
 }

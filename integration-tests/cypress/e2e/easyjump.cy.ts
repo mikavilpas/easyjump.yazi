@@ -4,6 +4,7 @@ import {
   textIsVisibleWithBackgroundColor,
   textIsVisibleWithColor,
 } from "@tui-sandbox/library"
+
 import { startYaziApplication } from "./utils/startYaziApplication.js"
 
 const candidateColor = "rgb(253, 161, 161)"

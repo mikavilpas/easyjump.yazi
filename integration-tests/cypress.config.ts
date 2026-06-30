@@ -1,8 +1,9 @@
 import assert from "assert"
-import { defineConfig } from "cypress"
 import { readdir, readFile } from "fs/promises"
 import path from "path"
 import { inspect } from "util"
+
+import { defineConfig } from "cypress"
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname)
 const testDirs = path.resolve(__dirname, "test-environment/testdirs")
