@@ -21,8 +21,8 @@ importers:
         specifier: 10.0.1
         version: 10.0.1(eslint@10.6.0(supports-color@8.1.1))
       '@tui-sandbox/library':
-        specifier: 12.7.0
-        version: 12.7.0(cypress@15.18.0)(oxfmt@0.57.0)(prettier@3.8.5)(type-fest@5.7.0)(typescript@6.0.3)(wait-on@9.0.10)(zod@4.4.3)
+        specifier: 12.7.1
+        version: 12.7.1(cypress@15.18.0)(oxfmt@0.57.0)(prettier@3.8.5)(type-fest@5.7.0)(typescript@6.0.3)(wait-on@9.0.10)(zod@4.4.3)
       '@types/node':
         specifier: 24.13.2
         version: 24.13.2
@@ -619,8 +619,8 @@ packages:
     peerDependencies:
       typescript: '>=5.7.2'
 
-  '@tui-sandbox/library@12.7.0':
-    resolution: {integrity: sha512-n/2YIOa2uE40uU41Vnv4sMEwX3q73QaefC6EGxldMQA9LZRKB1n274IVss3vOVOZVLgUeKZU2HwrXwD1jSYNog==}
+  '@tui-sandbox/library@12.7.1':
+    resolution: {integrity: sha512-wyENtDzLCCEcerwLix3EaYLYJedwVqcGTQipKXPeHGsXFk7Yu+McBxZH4fAgzzH7FARdejrBPuUyPr8NzZkoOQ==}
     engines: {node: '>=24.0.0'}
     hasBin: true
     peerDependencies:
@@ -2187,7 +2187,7 @@ snapshots:
     dependencies:
       typescript: 6.0.3
 
-  '@tui-sandbox/library@12.7.0(cypress@15.18.0)(oxfmt@0.57.0)(prettier@3.8.5)(type-fest@5.7.0)(typescript@6.0.3)(wait-on@9.0.10)(zod@4.4.3)':
+  '@tui-sandbox/library@12.7.1(cypress@15.18.0)(oxfmt@0.57.0)(prettier@3.8.5)(type-fest@5.7.0)(typescript@6.0.3)(wait-on@9.0.10)(zod@4.4.3)':
     dependencies:
       '@catppuccin/palette': 1.8.0
       '@trpc/client': 11.18.0(@trpc/server@11.18.0(typescript@6.0.3))(typescript@6.0.3)
