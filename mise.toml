@@ -3,9 +3,9 @@
 # yazi dependencies
 "github:sharkdp/fd" = "10.4.2"
 "github:junegunn/fzf" = "0.74.0"
-"github:BurntSushi/ripgrep" = { version = "15.1.0", exe = "rg" }
+"github:BurntSushi/ripgrep" = { version = "15.2.0", exe = "rg" }
 
 # development tools
 "github:JohnnyMorganz/stylua" = "2.5.2"
-"github:rvben/rumdl" = "0.2.33"
+"github:rvben/rumdl" = "0.2.34"
 actionlint = "1.7.12"
