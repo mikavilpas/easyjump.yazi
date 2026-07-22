@@ -1,9 +1,5 @@
 import { flavors } from "@catppuccin/palette"
-import {
-  rgbify,
-  textIsVisibleWithBackgroundColor,
-  textIsVisibleWithColor,
-} from "@tui-sandbox/library"
+import { rgbify, textIsVisibleWithBackgroundColor, textIsVisibleWithColor } from "@tui-sandbox/library"
 
 import { startYaziApplication } from "./utils/startYaziApplication.js"
 
@@ -11,35 +7,25 @@ const candidateColor = "rgb(253, 161, 161)"
 const firstCharReceivedColor = "rgb(223, 98, 73)"
 
 const isFileSelected = (fileName: string) =>
-  textIsVisibleWithColor(
-    fileName,
-    rgbify(flavors.macchiato.colors.text.rgb),
-  ).then(() => {
-    textIsVisibleWithBackgroundColor(
-      fileName,
-      rgbify(flavors.macchiato.colors.text.rgb),
-    )
+  textIsVisibleWithColor(fileName, rgbify(flavors.macchiato.colors.text.rgb)).then(() => {
+    textIsVisibleWithBackgroundColor(fileName, rgbify(flavors.macchiato.colors.text.rgb))
   })
 
 describe("easyjump", () => {
   it("can jump to a file", () => {
     cy.visit("/")
-    startYaziApplication({ dir: "dir-with-jumpable-files" }).then((term) => {
+    startYaziApplication({ dir: "dir-with-jumpable-files" }).then(term => {
       // wait for the yazi ui to be visible. It will select the first file
       // automatically
       cy.contains("NOR")
-      isFileSelected(
-        term.dir.contents["dir-with-jumpable-files"].contents.file1.name,
-      )
+      isFileSelected(term.dir.contents["dir-with-jumpable-files"].contents.file1.name)
 
       // activate the easyjump plugin. yazi will prompt which file to jump to
       cy.typeIntoTerminal("i")
 
       textIsVisibleWithColor("b", candidateColor)
       cy.typeIntoTerminal("b")
-      isFileSelected(
-        term.dir.contents["dir-with-jumpable-files"].contents.file2.name,
-      )
+      isFileSelected(term.dir.contents["dir-with-jumpable-files"].contents.file2.name)
 
       // in normal mode, easyjump mode should be deactivated after a single
       // jump
@@ -52,13 +38,11 @@ describe("easyjump", () => {
     startYaziApplication({
       dir: "dir-with-jumpable-files",
       configModifications: ["customize_colors.lua"],
-    }).then((term) => {
+    }).then(term => {
       // wait for the yazi ui to be visible. It will select the first file
       // automatically
       cy.contains("NOR")
-      isFileSelected(
-        term.dir.contents["dir-with-jumpable-files"].contents.file1.name,
-      )
+      isFileSelected(term.dir.contents["dir-with-jumpable-files"].contents.file1.name)
 
       // activate the easyjump plugin. yazi will prompt which file to jump to
       cy.typeIntoTerminal("i")
@@ -75,7 +59,7 @@ describe("easyjump", () => {
     cy.visit("/")
     startYaziApplication({
       dir: "lots-of-files",
-    }).then((term) => {
+    }).then(term => {
       cy.contains("NOR")
       isFileSelected(term.dir.contents["lots-of-files"].contents.file.name)
       cy.typeIntoTerminal("i")
@@ -94,10 +78,9 @@ describe("easyjump", () => {
     cy.visit("/")
     startYaziApplication({
       dir: "dir-with-jumpable-files",
-    }).then((term) => {
+    }).then(term => {
       cy.contains("NOR")
-      const file1 =
-        term.dir.contents["dir-with-jumpable-files"].contents.file1.name
+      const file1 = term.dir.contents["dir-with-jumpable-files"].contents.file1.name
       isFileSelected(file1)
 
       cy.typeIntoTerminal("i")
@@ -115,7 +98,7 @@ describe("easyjump", () => {
     cy.visit("/")
     startYaziApplication({
       dir: "lots-of-files",
-    }).then((term) => {
+    }).then(term => {
       cy.contains("NOR")
       isFileSelected(term.dir.contents["lots-of-files"].contents.file.name)
       cy.typeIntoTerminal("i")
@@ -142,7 +125,7 @@ describe("easyjump", () => {
     cy.visit("/")
     startYaziApplication({
       dir: "lots-of-files",
-    }).then((term) => {
+    }).then(term => {
       // if the user types an incorrect first character, they can use
       // backspace to go back and try again without canceling the entire jump
       cy.contains("NOR")
@@ -165,7 +148,7 @@ describe("easyjump", () => {
     cy.visit("/")
     startYaziApplication({
       dir: "lots-of-files",
-    }).then((term) => {
+    }).then(term => {
       // if the user types an incorrect first character, they can use
       // backspace to go back and try again without canceling the entire jump
       cy.contains("NOR")
@@ -196,7 +179,7 @@ describe("easyjump", () => {
     startYaziApplication({
       dir: "lots-of-files",
       configModifications: ["customize_keys.lua"],
-    }).then((term) => {
+    }).then(term => {
       // wait for the yazi ui to be visible
       cy.contains("NOR")
       isFileSelected(term.dir.contents["lots-of-files"].contents.file.name)
@@ -221,7 +204,7 @@ describe("easyjump", () => {
     startYaziApplication({
       dir: "lots-of-files",
       configModifications: ["duplicate_keys.lua"],
-    }).then((term) => {
+    }).then(term => {
       // wait for the yazi ui to be visible
       cy.contains("NOR")
 

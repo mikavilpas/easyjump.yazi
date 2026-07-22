@@ -2,12 +2,10 @@
 
 A yazi plugin for quickly jumping to the visible files.
 
-A bit like [hop.nvim](https://github.com/smoka7/hop.nvim) in Neovim but for
-yazi.
+A bit like [hop.nvim](https://github.com/smoka7/hop.nvim) in Neovim but for yazi.
 
-Tested on yazi nightly, stable, up to v25.5.31. The exact versions are visible
-in [test.yml](.github/workflows/test.yml). Also see the
-[yazi releases page](https://github.com/sxyazi/yazi/releases).
+Tested on yazi nightly, stable, up to v25.5.31. The exact versions are visible in
+[test.yml](.github/workflows/test.yml). Also see the [yazi releases page](https://github.com/sxyazi/yazi/releases).
 
 ## Usage
 
@@ -32,8 +30,7 @@ ya pkg add mikavilpas/easyjump.yazi:easyjump
 These instructions assume you are using
 <https://github.com/mikavilpas/yazi.nvim/blob/main/documentation/plugin-management.md>.
 
-It's recommended to set `version = "*"` to avoid lots of testing related package
-updates that are done automatically.
+It's recommended to set `version = "*"` to avoid lots of testing related package updates that are done automatically.
 
 ```lua
 return {
@@ -87,12 +84,10 @@ require("easyjump"):setup({
 - **Single labels** = `first_keys` + `second_keys` (used when ≤25 files visible)
 - **Double labels** = `first_keys` × `second_keys` (used when >25 files)
 
-With the default 14 first_keys and 11 second_keys, you get 25 single labels and
-154 double labels.
+With the default 14 first_keys and 11 second_keys, you get 25 single labels and 154 double labels.
 
-**Important:** `first_keys` and `second_keys` must not share any characters. If
-they overlap, an error notification is displayed and the defaults are used
-instead.
+**Important:** `first_keys` and `second_keys` must not share any characters. If they overlap, an error notification is
+displayed and the defaults are used instead.
 
 ### Keymap
 
@@ -106,11 +101,10 @@ run  = "plugin easyjump"
 desc = "easyjump"
 ```
 
-When you see a character (single or double) on the left side of the entry. Press
-the key of the character to jump to the corresponding entry.
+When you see a character (single or double) on the left side of the entry. Press the key of the character to jump to the
+corresponding entry.
 
 ## Acknowledgements 🙏🏻
 
-Originally developed by DreamMaoMao. The original version is hosted at
-<https://gitee.com/DreamMaoMao/easyjump.yazi>. I liked this plugin so much that
-I wanted to add tests and maintain it.
+Originally developed by DreamMaoMao. The original version is hosted at <https://gitee.com/DreamMaoMao/easyjump.yazi>. I
+liked this plugin so much that I wanted to add tests and maintain it.

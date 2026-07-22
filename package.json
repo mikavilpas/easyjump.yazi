@@ -5,6 +5,7 @@
   "keywords": [],
   "license": "ISC",
   "author": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "dev": "pnpm --filter ./integration-tests/ dev",
@@ -14,6 +15,7 @@
     "tui": "pnpm --filter ./integration-tests/ exec tui"
   },
   "devDependencies": {
+    "@mikavilpas/oxfmt-config": "3.0.0",
     "oxfmt": "0.59.0"
   },
   "packageManager": "pnpm@11.15.0"

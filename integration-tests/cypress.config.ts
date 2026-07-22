@@ -22,9 +22,7 @@ export default defineConfig({
             withFileTypes: true,
           })
 
-          const logFiles = files.filter(
-            (f) => f.isFile() && f.name === "yazi.log",
-          )
+          const logFiles = files.filter(f => f.isFile() && f.name === "yazi.log")
 
           if (logFiles.length === 0) {
             console.warn("No yazi.log files found")
@@ -43,10 +41,7 @@ export default defineConfig({
 
           try {
             const log = await readFile(yaziLogFile, "utf-8")
-            console.log(
-              `${yaziLogFile}`,
-              inspect(log.split("\n"), { maxArrayLength: null, colors: true }),
-            )
+            console.log(`${yaziLogFile}`, inspect(log.split("\n"), { maxArrayLength: null, colors: true }))
             return null
           } catch (err) {
             console.error(err)
