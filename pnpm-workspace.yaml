@@ -9,3 +9,6 @@ onlyBuiltDependencies:
   - cypress
   - esbuild
   - node-pty
+
+minimumReleaseAgeExclude:
+  - "@mikavilpas/oxfmt-config@3.0.0"

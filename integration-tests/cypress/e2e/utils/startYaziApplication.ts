@@ -19,7 +19,7 @@ export const startYaziApplication = ({
   return cy
     .startTerminalApplication({
       commandToRun: ["bash"],
-      configureTerminal: (term) => {
+      configureTerminal: term => {
         // yazi needs this to be able to start
         term.recipes.supportDA1()
       },
@@ -27,11 +27,10 @@ export const startYaziApplication = ({
         MISE_NO_CONFIG: "1",
       },
     })
-    .then((term) => {
+    .then(term => {
       // link the source code to be available in the test environment
       term.runBlockingShellCommand({
-        command:
-          "mkdir plugins && ln -s ../../../../../../../easyjump.yazi/ plugins/easyjump.yazi",
+        command: "mkdir plugins && ln -s ../../../../../../../easyjump.yazi/ plugins/easyjump.yazi",
         cwdRelative: ".config/yazi",
       })
 
@@ -41,11 +40,7 @@ export const startYaziApplication = ({
 
       // append all the configModifications into the yazi config init.lua file
       for (const modification of configModifications) {
-        const file = path.resolve(
-          term.dir.rootPathAbsolute,
-          "config-modifications",
-          modification,
-        )
+        const file = path.resolve(term.dir.rootPathAbsolute, "config-modifications", modification)
         term.runBlockingShellCommand({
           command: `cat ${file} >> .config/yazi/init.lua`,
         })
