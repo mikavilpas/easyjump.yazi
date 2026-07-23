@@ -6,7 +6,7 @@ import { startYaziApplication } from "./utils/startYaziApplication.js"
 const candidateColor = "rgb(253, 161, 161)"
 const firstCharReceivedColor = "rgb(223, 98, 73)"
 
-const isFileSelected = (fileName: string) =>
+const isFileSelected = (fileName: string): Cypress.Chainable<JQuery> =>
   textIsVisibleWithColor(fileName, rgbify(flavors.macchiato.colors.text.rgb)).then(() => {
     textIsVisibleWithBackgroundColor(fileName, rgbify(flavors.macchiato.colors.text.rgb))
   })
