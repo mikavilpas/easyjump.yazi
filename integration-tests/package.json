@@ -5,25 +5,22 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently --kill-others --names 'app,cypress' --prefix-colors 'blue,yellow' 'pnpm tui start'  'pnpm cypress open --e2e --browser=electron'",
-    "lint": "pnpx oxlint --type-aware && eslint --max-warnings=0 ."
+    "lint": "oxlint"
   },
   "devDependencies": {
     "@catppuccin/palette": "1.8.0",
-    "@eslint/js": "10.0.1",
+    "@mikavilpas/oxlint-config": "1.1.0",
     "@tui-sandbox/library": "12.7.3",
     "@types/node": "24.13.3",
     "@types/tinycolor2": "1.4.6",
     "concurrently": "10.0.3",
     "cypress": "15.18.1",
-    "eslint": "10.7.0",
-    "eslint-config-prettier": "10.1.8",
     "eslint-plugin-no-only-tests": "3.4.0",
-    "eslint-plugin-oxlint": "1.73.0",
-    "oxlint-tsgolint": "0.25.0",
+    "oxlint": "1.74.0",
+    "oxlint-tsgolint": "7.0.2001",
     "tinycolor2": "1.6.0",
     "type-fest": "5.8.0",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.64.0",
     "wait-on": "9.0.10",
     "zod": "4.4.3"
   }

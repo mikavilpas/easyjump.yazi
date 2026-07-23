@@ -12,3 +12,4 @@ onlyBuiltDependencies:
 
 minimumReleaseAgeExclude:
   - "@mikavilpas/oxfmt-config@3.0.0"
+  - "@mikavilpas/oxlint-config@1.1.0"
