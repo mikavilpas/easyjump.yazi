@@ -7,5 +7,5 @@
 
 # development tools
 "github:JohnnyMorganz/stylua" = "2.5.2"
-"github:rvben/rumdl" = "0.2.47"
+"github:rvben/rumdl" = "0.2.48"
 actionlint = "1.7.12"
