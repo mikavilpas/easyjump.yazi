@@ -165,17 +165,6 @@ local function validate_keys(first_keys, second_keys)
   return true, nil
 end
 
-local render = ya.sync(function()
-  if type(ui.render) == "function" then
-    -- ya.render was deprecated in
-    -- https://github.com/sxyazi/yazi/commit/ffdd74b6abf552fd65738642aec50ca898fb26dd
-    -- (2025-07-03)
-    ui.render()
-  else
-    ya.render()
-  end
-end)
-
 local status_ej = function(self)
   local style = self:style()
   return ui.Line({
@@ -192,7 +181,7 @@ local toggle_ui = ya.sync(function(st)
     st.status_ej_id = nil
     Entity._inc = Entity._inc - 1
     Status._inc = Status._inc - 1
-    render()
+    ui.render()
     return
   end
 
@@ -224,7 +213,7 @@ local toggle_ui = ya.sync(function(st)
   st.entity_label_id = Entity:children_add(entity_label, 2001)
 
   st.status_ej_id = Status:children_add(status_ej, 1001, Status.LEFT)
-  render()
+  ui.render()
 end)
 
 ---@param state easyjump.state
@@ -257,7 +246,6 @@ local function read_single_key(ctx)
       local key = ctx.input_keys[cand]
       local file_index = ctx.single_key_files[key]
       if file_index and file_index <= ctx.current_files_count then
-        -- ya.mgr_emit is deprecated in https://github.com/sxyazi/yazi/pull/2653
         ya.emit("arrow", { file_index - ctx.cursor - 1 + ctx.offset })
         return -- jumped
       end
@@ -314,7 +302,6 @@ local function read_double_second_key(ctx, first_key)
       local double_key = first_key .. second_key
       local file_index = ctx.double_key_files[double_key]
       if file_index and file_index <= ctx.current_files_count then
-        -- ya.mgr_emit is deprecated in https://github.com/sxyazi/yazi/pull/2653
         ya.emit("arrow", { file_index - ctx.cursor - 1 + ctx.offset })
         return "jumped"
       end
