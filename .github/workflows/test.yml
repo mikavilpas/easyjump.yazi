@@ -43,7 +43,7 @@ jobs:
           - name: stable # the latest stable yazi version
             method: download
             # renovate: datasource=github-releases depName=sxyazi/yazi
-            version: v26.5.6
+            version: v26.8.15
           - name: nightly
             method: restore-nightly
 
