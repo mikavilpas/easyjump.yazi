@@ -28,10 +28,7 @@ jobs:
       matrix:
         yazi-version:
           # keep these up to date with the readme! 🙏🏻
-          - name: v25.5.31 # the oldest yazi version we support
-            method: download
-            version: v25.5.31
-          - name: v25.12.29
+          - name: v25.12.29 # the oldest yazi version we support
             method: download
             version: v25.12.29
           - name: v26.1.4
