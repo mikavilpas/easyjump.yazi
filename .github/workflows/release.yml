@@ -8,6 +8,9 @@ on:
 env:
   # renovate: datasource=npm depName=semantic-release
   SEMANTIC_RELEASE_VERSION: 25.0.9
+  # https://github.com/semantic-release/release-notes-generator/issues/992
+  # renovate: datasource=npm depName=conventional-changelog-conventionalcommits
+  CONVENTIONAL_COMMITS_PRESET_VERSION: 9.3.1
 
 permissions:
   contents: write
@@ -29,4 +32,7 @@ jobs:
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release@${{ env.SEMANTIC_RELEASE_VERSION }}
+        run: >-
+          npx --package=semantic-release@${{ env.SEMANTIC_RELEASE_VERSION }}
+          --package=conventional-changelog-conventionalcommits@${{ env.CONVENTIONAL_COMMITS_PRESET_VERSION }} --
+          semantic-release

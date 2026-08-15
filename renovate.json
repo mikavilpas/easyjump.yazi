@@ -3,5 +3,13 @@
   "extends": ["local>mikavilpas/mika-renovate"],
   "git-submodules": {
     "enabled": true
-  }
+  },
+  "packageRules": [
+    {
+      "description": "v10 generates empty release notes with the semantic-release version we use, see https://github.com/semantic-release/release-notes-generator/issues/992 - this can be removed once that is fixed",
+      "matchDatasources": ["npm"],
+      "matchPackageNames": ["conventional-changelog-conventionalcommits"],
+      "allowedVersions": "<10"
+    }
+  ]
 }
