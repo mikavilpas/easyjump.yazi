@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
-      - uses: rvben/rumdl@0ac9bfbb1421d5acf0283c46ba09ae46699e2fda # v0
+      - uses: rvben/rumdl@4997ff07b63c7a54d6a495ebcd3ce7f23ee1173f # v0
 
   actionlint:
     runs-on: ubuntu-24.04
