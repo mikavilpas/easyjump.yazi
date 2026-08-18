@@ -13,7 +13,7 @@
     "@tui-sandbox/library": "13.0.2",
     "@types/node": "24.13.3",
     "@types/tinycolor2": "1.4.6",
-    "concurrently": "10.0.4",
+    "concurrently": "10.0.5",
     "cypress": "15.20.1",
     "eslint-plugin-no-only-tests": "3.4.0",
     "oxlint": "1.78.0",
