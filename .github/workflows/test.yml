@@ -10,7 +10,7 @@ permissions:
 
 env:
   # renovate: datasource=git-refs packageName=https://github.com/sxyazi/yazi
-  YAZI_NIGHTLY_COMMIT: af43f09abe6f2f8e35b19b691f95755ec7b5df5e
+  YAZI_NIGHTLY_COMMIT: 5f31edffc691deb5cdc4b95047208e3373fc8a10
 
 jobs:
   build-yazi-nightly:
