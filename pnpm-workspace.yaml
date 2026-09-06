@@ -1,5 +1,5 @@
 packages:
-  - ./integration-tests/
+  - integration-tests/
 allowBuilds:
   cypress: true
   esbuild: true
@@ -9,7 +9,3 @@ onlyBuiltDependencies:
   - cypress
   - esbuild
   - node-pty
-
-minimumReleaseAgeExclude:
-  - "@mikavilpas/oxfmt-config@3.0.0"
-  - "@mikavilpas/oxlint-config@1.1.0"
