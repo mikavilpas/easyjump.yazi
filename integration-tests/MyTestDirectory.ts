@@ -14,10 +14,7 @@ export const MyTestDirectorySchema = z.object({
   name: z.literal("test-environment/"),
   type: z.literal("directory"),
   contents: z.object({
-    ".bashrc": z.object({
-      name: z.literal(".bashrc"),
-      type: z.literal("file"),
-    }),
+    ".bashrc": z.object({ name: z.literal(".bashrc"), type: z.literal("file") }),
     ".config": z.object({
       name: z.literal(".config/"),
       type: z.literal("directory"),
@@ -26,14 +23,8 @@ export const MyTestDirectorySchema = z.object({
           name: z.literal("yazi/"),
           type: z.literal("directory"),
           contents: z.object({
-            "init.lua": z.object({
-              name: z.literal("init.lua"),
-              type: z.literal("file"),
-            }),
-            "keymap.toml": z.object({
-              name: z.literal("keymap.toml"),
-              type: z.literal("file"),
-            }),
+            "init.lua": z.object({ name: z.literal("init.lua"), type: z.literal("file") }),
+            "keymap.toml": z.object({ name: z.literal("keymap.toml"), type: z.literal("file") }),
           }),
         }),
       }),
@@ -42,18 +33,9 @@ export const MyTestDirectorySchema = z.object({
       name: z.literal("config-modifications/"),
       type: z.literal("directory"),
       contents: z.object({
-        "customize_colors.lua": z.object({
-          name: z.literal("customize_colors.lua"),
-          type: z.literal("file"),
-        }),
-        "customize_keys.lua": z.object({
-          name: z.literal("customize_keys.lua"),
-          type: z.literal("file"),
-        }),
-        "duplicate_keys.lua": z.object({
-          name: z.literal("duplicate_keys.lua"),
-          type: z.literal("file"),
-        }),
+        "customize_colors.lua": z.object({ name: z.literal("customize_colors.lua"), type: z.literal("file") }),
+        "customize_keys.lua": z.object({ name: z.literal("customize_keys.lua"), type: z.literal("file") }),
+        "duplicate_keys.lua": z.object({ name: z.literal("duplicate_keys.lua"), type: z.literal("file") }),
       }),
     }),
     "dir-with-jumpable-files": z.object({
@@ -69,110 +51,32 @@ export const MyTestDirectorySchema = z.object({
       type: z.literal("directory"),
       contents: z.object({
         file: z.object({ name: z.literal("file"), type: z.literal("file") }),
-        file_1: z.object({
-          name: z.literal("file_1"),
-          type: z.literal("file"),
-        }),
-        file_10: z.object({
-          name: z.literal("file_10"),
-          type: z.literal("file"),
-        }),
-        file_11: z.object({
-          name: z.literal("file_11"),
-          type: z.literal("file"),
-        }),
-        file_12: z.object({
-          name: z.literal("file_12"),
-          type: z.literal("file"),
-        }),
-        file_13: z.object({
-          name: z.literal("file_13"),
-          type: z.literal("file"),
-        }),
-        file_14: z.object({
-          name: z.literal("file_14"),
-          type: z.literal("file"),
-        }),
-        file_15: z.object({
-          name: z.literal("file_15"),
-          type: z.literal("file"),
-        }),
-        file_16: z.object({
-          name: z.literal("file_16"),
-          type: z.literal("file"),
-        }),
-        file_17: z.object({
-          name: z.literal("file_17"),
-          type: z.literal("file"),
-        }),
-        file_18: z.object({
-          name: z.literal("file_18"),
-          type: z.literal("file"),
-        }),
-        file_19: z.object({
-          name: z.literal("file_19"),
-          type: z.literal("file"),
-        }),
-        file_2: z.object({
-          name: z.literal("file_2"),
-          type: z.literal("file"),
-        }),
-        file_20: z.object({
-          name: z.literal("file_20"),
-          type: z.literal("file"),
-        }),
-        file_21: z.object({
-          name: z.literal("file_21"),
-          type: z.literal("file"),
-        }),
-        file_22: z.object({
-          name: z.literal("file_22"),
-          type: z.literal("file"),
-        }),
-        file_23: z.object({
-          name: z.literal("file_23"),
-          type: z.literal("file"),
-        }),
-        file_24: z.object({
-          name: z.literal("file_24"),
-          type: z.literal("file"),
-        }),
-        file_25: z.object({
-          name: z.literal("file_25"),
-          type: z.literal("file"),
-        }),
-        file_26: z.object({
-          name: z.literal("file_26"),
-          type: z.literal("file"),
-        }),
-        file_3: z.object({
-          name: z.literal("file_3"),
-          type: z.literal("file"),
-        }),
-        file_4: z.object({
-          name: z.literal("file_4"),
-          type: z.literal("file"),
-        }),
-        file_5: z.object({
-          name: z.literal("file_5"),
-          type: z.literal("file"),
-        }),
-        file_6: z.object({
-          name: z.literal("file_6"),
-          type: z.literal("file"),
-        }),
-        file_7: z.object({
-          name: z.literal("file_7"),
-          type: z.literal("file"),
-        }),
-        file_8: z.object({
-          name: z.literal("file_8"),
-          type: z.literal("file"),
-        }),
-        file_9: z.object({
-          name: z.literal("file_9"),
-          type: z.literal("file"),
-        }),
+        file_1: z.object({ name: z.literal("file_1"), type: z.literal("file") }),
+        file_10: z.object({ name: z.literal("file_10"), type: z.literal("file") }),
+        file_11: z.object({ name: z.literal("file_11"), type: z.literal("file") }),
+        file_12: z.object({ name: z.literal("file_12"), type: z.literal("file") }),
+        file_13: z.object({ name: z.literal("file_13"), type: z.literal("file") }),
+        file_14: z.object({ name: z.literal("file_14"), type: z.literal("file") }),
+        file_15: z.object({ name: z.literal("file_15"), type: z.literal("file") }),
+        file_16: z.object({ name: z.literal("file_16"), type: z.literal("file") }),
+        file_17: z.object({ name: z.literal("file_17"), type: z.literal("file") }),
+        file_18: z.object({ name: z.literal("file_18"), type: z.literal("file") }),
+        file_19: z.object({ name: z.literal("file_19"), type: z.literal("file") }),
+        file_2: z.object({ name: z.literal("file_2"), type: z.literal("file") }),
+        file_20: z.object({ name: z.literal("file_20"), type: z.literal("file") }),
+        file_21: z.object({ name: z.literal("file_21"), type: z.literal("file") }),
+        file_22: z.object({ name: z.literal("file_22"), type: z.literal("file") }),
+        file_23: z.object({ name: z.literal("file_23"), type: z.literal("file") }),
+        file_24: z.object({ name: z.literal("file_24"), type: z.literal("file") }),
+        file_25: z.object({ name: z.literal("file_25"), type: z.literal("file") }),
+        file_26: z.object({ name: z.literal("file_26"), type: z.literal("file") }),
+        file_3: z.object({ name: z.literal("file_3"), type: z.literal("file") }),
+        file_4: z.object({ name: z.literal("file_4"), type: z.literal("file") }),
+        file_5: z.object({ name: z.literal("file_5"), type: z.literal("file") }),
+        file_6: z.object({ name: z.literal("file_6"), type: z.literal("file") }),
+        file_7: z.object({ name: z.literal("file_7"), type: z.literal("file") }),
+        file_8: z.object({ name: z.literal("file_8"), type: z.literal("file") }),
+        file_9: z.object({ name: z.literal("file_9"), type: z.literal("file") }),
       }),
     }),
   }),
