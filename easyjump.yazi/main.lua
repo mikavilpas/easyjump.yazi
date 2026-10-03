@@ -1,4 +1,4 @@
---- @since 25.12.29
+--- @since 26.1.4
 
 -- Default hint key configuration
 -- IMPORTANT: first_keys and second_keys must NOT overlap
