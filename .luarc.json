@@ -2,8 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
   "runtime": {
     "version": "LuaJIT",
-    "pathStrict": true,
-    "path": ["?.lua", "?/init.lua", "easyjump.yazi?.lua"]
+    "pathStrict": true
   },
   "workspace": {
     "checkThirdParty": false,
