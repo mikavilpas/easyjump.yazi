@@ -9,7 +9,6 @@ const __dirname = path.dirname(new URL(import.meta.url).pathname)
 const testDirs = path.resolve(__dirname, "test-environment/testdirs")
 export default defineConfig({
   e2e: {
-    allowCypressEnv: false,
     baseUrl: "http://localhost:3000",
     setupNodeEvents(on, _config) {
       on("task", {
