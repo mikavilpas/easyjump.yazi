@@ -96,8 +96,8 @@ Set a shortcut key to toggle easyjump mode. For example, set `i`:
 ```toml
 # ~/.config/yazi/keymap.toml
 [[manager.prepend_keymap]]
-on   = [ "i" ]
-run  = "plugin easyjump"
+on = ["i"]
+run = "plugin easyjump"
 desc = "easyjump"
 ```
 
