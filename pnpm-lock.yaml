@@ -183,7 +183,7 @@ importers:
         version: 3.0.1(oxlint-tsgolint@7.0.2006)(oxlint@1.93.0(oxlint-tsgolint@7.0.2006))
       '@tui-sandbox/library':
         specifier: 13.0.6
-        version: 13.0.6(cypress@16.2.1)(oxfmt@0.78.0)(prettier@3.9.6)(type-fest@5.10.0)(typescript@7.0.2)(wait-on@9.5.1(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1))(zod@4.6.7)
+        version: 13.0.6(cypress@16.3.0)(oxfmt@0.78.0)(prettier@3.9.6)(type-fest@5.10.0)(typescript@7.0.2)(wait-on@9.5.1(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1))(zod@4.6.7)
       '@types/node':
         specifier: 26.6.6
         version: 26.6.6
@@ -194,8 +194,8 @@ importers:
         specifier: 10.0.7
         version: 10.0.7
       cypress:
-        specifier: 16.2.1
-        version: 16.2.1
+        specifier: 16.3.0
+        version: 16.3.0
       eslint-plugin-no-only-tests:
         specifier: 3.4.0
         version: 3.4.0
@@ -1083,8 +1083,8 @@ packages:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
 
-  cypress@16.2.1:
-    resolution: {integrity: sha512-3Vqf1Krr92hKww/Owob9JrDO7TgBCR2ct+OQrvBOFGSnoGsikL4YF5arqDrJb+SM8Fzi7xXIeVmCeaOqJKPhRA==}
+  cypress@16.3.0:
+    resolution: {integrity: sha512-h5qq6G9wgNEMWEUFejeBwj7fzwJljrO54n3wAa7yW2Q/8ORnkq4tQBqUhY4g9UM5uOazKmr4ay8YcKi+SJJ1ng==}
     engines: {node: ^22.0.0 || ^24.0.0 || >=26.0.0}
     hasBin: true
 
@@ -1656,8 +1656,8 @@ packages:
     resolution: {integrity: sha512-MpUEN2OodtUzxvKQl72cUF7RQ5EiHsGvSsVG0ia9c5RbWGL2CI4C7EpPS8UTBIplnlzZiNuV56w+FuNxy3ty2Q==}
     engines: {node: '>=10'}
 
-  systeminformation@5.33.8:
-    resolution: {integrity: sha512-v4F6OGYGh7wDvV68YmjOmZwGixV9A/GQ7d2b84t0UF4CaOy9jipNWIJDkHqYDYiTPuiojqlwVQd0hfUKOUN7tQ==}
+  systeminformation@5.33.19:
+    resolution: {integrity: sha512-Zm7wGeCG7PqfvzegMJIzrxICopWqYCeLATVmvxOOci1isLcNVKgY4Fr0hhYQzvc7cgtK3377jQVChTFAnznOiA==}
     engines: {node: '>=10.0.0'}
     os: [darwin, linux, win32, freebsd, openbsd, netbsd, sunos, android]
     hasBin: true
@@ -2123,7 +2123,7 @@ snapshots:
     dependencies:
       typescript: 7.0.2
 
-  '@tui-sandbox/library@13.0.6(cypress@16.2.1)(oxfmt@0.78.0)(prettier@3.9.6)(type-fest@5.10.0)(typescript@7.0.2)(wait-on@9.5.1(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1))(zod@4.6.7)':
+  '@tui-sandbox/library@13.0.6(cypress@16.3.0)(oxfmt@0.78.0)(prettier@3.9.6)(type-fest@5.10.0)(typescript@7.0.2)(wait-on@9.5.1(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1))(zod@4.6.7)':
     dependencies:
       '@catppuccin/palette': 1.8.0
       '@trpc/client': 11.19.0(@trpc/server@11.19.0(typescript@7.0.2))(typescript@7.0.2)
@@ -2134,7 +2134,7 @@ snapshots:
       '@xterm/xterm': 6.0.0
       concurrently: 10.0.5
       cors: 2.8.6
-      cypress: 16.2.1
+      cypress: 16.3.0
       dree: 5.1.5
       neovim: 5.5.0
       oxfmt: 0.78.0
@@ -2427,7 +2427,7 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
-  cypress@16.2.1:
+  cypress@16.3.0:
     dependencies:
       '@cypress/request': 4.0.1
       '@cypress/xvfb': 1.2.4(supports-color@8.1.1)
@@ -2463,7 +2463,7 @@ snapshots:
       proxy-from-env: 1.0.0
       request-progress: 3.0.0
       supports-color: 8.1.1
-      systeminformation: 5.33.8
+      systeminformation: 5.33.19
       tmp: 0.2.7
       tree-kill: 1.2.2
       untildify: 4.0.0
@@ -3070,7 +3070,7 @@ snapshots:
     dependencies:
       has-flag: 4.0.0
 
-  systeminformation@5.33.8: {}
+  systeminformation@5.33.19: {}
 
   tagged-tag@1.0.0: {}
 
